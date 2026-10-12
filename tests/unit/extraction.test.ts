@@ -158,7 +158,7 @@ describe("endpoint de extracción con IA", () => {
 
   it("con configuración: envía solo el mensaje, valida y no expone la clave", async () => {
     process.env.AI_EXTRACTION_ENABLED = "true";
-    process.env.ANTHROPIC_API_KEY = "sk-ant-clave-de-prueba-no-real";
+    process.env.ANTHROPIC_API_KEY = "valor-de-prueba-no-es-una-clave";
     process.env.EXTRACTION_MODEL = "modelo-configurado-en-env";
     parseMock.mockResolvedValue({
       stop_reason: "end_turn",
@@ -180,7 +180,7 @@ describe("endpoint de extracción con IA", () => {
     expect(body.mode).toBe("api");
     expect(body.draft.total.value).toBe("45.000");
     expect(body.notices.join(" ")).toMatch(/no cambia reglas/);
-    expect(JSON.stringify(body)).not.toContain("sk-ant-clave");
+    expect(JSON.stringify(body)).not.toContain("valor-de-prueba-no-es-una-clave");
 
     const args = parseMock.mock.calls[0]![0];
     expect(args.model).toBe("modelo-configurado-en-env");
