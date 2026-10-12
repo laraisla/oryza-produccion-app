@@ -107,7 +107,7 @@ export default function ImportPage() {
             Una fila por movimiento de ingreso. Máximo {CSV_LIMITS.maxRows.toLocaleString("es-AR")} filas y 1 MB. Separador
             coma o punto y coma; guardalo como «CSV UTF-8».
           </p>
-          <div className="mt-3 overflow-x-auto">
+          <div className="mt-3 overflow-x-auto" tabIndex={0} role="region" aria-label="Columnas del formato (desplazable)">
             <table className="w-full text-left text-xs">
               <caption className="sr-only">Columnas del CSV</caption>
               <thead className="text-slate-600">
@@ -267,7 +267,7 @@ export default function ImportPage() {
         {imports.length === 0 ? (
           <p className="card mt-3 p-4 text-sm text-slate-700">Todavía no se importó ningún archivo.</p>
         ) : (
-          <div className="card mt-3 overflow-x-auto">
+          <div className="card mt-3 overflow-x-auto" tabIndex={0} role="region" aria-label="Archivos importados (desplazable)">
             <table className="w-full min-w-[44rem] text-left text-sm">
               <caption className="sr-only">Procedencia de los datos importados</caption>
               <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
@@ -417,7 +417,7 @@ function PlanPreview({ plan, fileName }: { plan: ImportPlan; fileName: string })
             </div>
           ) : null}
           {plan.items.length > 0 ? (
-            <div className="mt-3 max-h-80 overflow-auto rounded-lg border border-slate-200">
+            <div className="mt-3 max-h-80 overflow-auto rounded-lg border border-slate-200" tabIndex={0} role="region" aria-label="Filas válidas de la vista previa (desplazable)">
               <table className="w-full min-w-[36rem] text-left text-xs">
                 <caption className="sr-only">Filas válidas y cómo se importarán</caption>
                 <thead className="sticky top-0 bg-slate-50 text-slate-600">

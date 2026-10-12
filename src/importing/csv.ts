@@ -2,7 +2,7 @@
  * Lectura del CSV propio de movimientos. Usa PapaParse (parser probado) en vez
  * de separar por comas. El contenido se trata siempre como texto.
  *
- * Formato documentado en docs/FORMATO_CSV.md y en /plantilla-movimientos.csv.
+ * Formato documentado en docs/FORMATO_CSV.md; la plantilla se descarga desde la pantalla Importar.
  */
 import Papa from "papaparse";
 import { parseDate } from "@/domain/dates";

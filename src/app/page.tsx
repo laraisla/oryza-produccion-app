@@ -186,7 +186,7 @@ export default function HomePage() {
         ) : (
           <>
             {/* Escritorio: tabla */}
-            <div className="card hidden overflow-x-auto md:block">
+            <div className="card hidden overflow-x-auto md:block" tabIndex={0} role="region" aria-label="Tabla de pedidos (desplazable)">
               <table className="w-full text-left text-sm">
                 <caption className="sr-only">Pedidos con su estado de conciliación</caption>
                 <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
