@@ -49,6 +49,7 @@ describe("demo: estado inicial calculado", () => {
   });
   it("C: PED-103 menciona MOV-001, que corresponde a otro pedido", () => {
     expect(codes(get("PED-103"))).toContain("DECL_MOV_REF_OTRO");
+    expect(codes(get("PED-103"))).not.toContain("SIN_MOVIMIENTOS");
     expect(get("PED-103").proposals).toEqual([]);
   });
   it("D: PED-104 no encontrado en el archivo importado", () => {
@@ -80,6 +81,8 @@ describe("demo: recorrido del guion", () => {
     const c = ev.byOrderId.get("id-PED-103")!;
     expect(c).toMatchObject({ allocatedMinor: 0, outstandingMinor: 4_500_000, attention: "revision" });
     expect(codes(c)).toContain("DECL_MOV_USADO");
+    // Sin hallazgos contradictorios: el movimiento existe, solo que ya fue usado.
+    expect(codes(c)).not.toContain("SIN_MOVIMIENTOS");
     // Total asignado en toda la demo: 45.000 + 20.000 = 65.000 (MOV-001 contado una sola vez)
     expect(ev.orders.reduce((n, o) => n + o.allocatedMinor, 0)).toBe(6_500_000);
 

@@ -541,7 +541,7 @@ export function evaluate(data: Dataset): Evaluation {
           ? {
               code: "CAND_IMPORTE_AMBIGUO",
               severity: "advertencia",
-              title: "Revisión necesaria: importe que coincide con varios pedidos",
+              title: "Importe que coincide con varios pedidos",
               explanation: `${movementLabel(m)} coincide en importe con ${[o.reference, ...others.map(refOf)].join(" y ")}, pero su referencia («${m.reference || "sin referencia"}») no permite distinguirlos. No se asigna automáticamente: no se concilia por monto solamente.`,
               movementKeys: [m.key],
               relatedOrderIds: others,
@@ -753,7 +753,7 @@ export function evaluate(data: Dataset): Evaluation {
       b.outstandingMinor > 0 &&
       proposals.length === 0 &&
       candidates.length === 0 &&
-      !findings.some((f) => NOT_FOUND_CODES.has(f.code));
+      !findings.some((f) => NOT_FOUND_CODES.has(f.code) || REVIEW_CODES.has(f.code));
     if (nothingElseExplains && coverage.files === 0 && data.movements.length === 0) {
       findings.push({
         code: "SIN_IMPORTACIONES",

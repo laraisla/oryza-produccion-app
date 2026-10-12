@@ -60,9 +60,19 @@ export function formatDateTime(isoDateTime: string): string {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    hourCycle: "h23",
   });
 }
 
 export function compareIso(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0;
+}
+
+/**
+ * Fecha local de hoy (`AAAA-MM-DD`). Solo para proponer un valor por defecto
+ * editable en formularios; las reglas de conciliación nunca la usan.
+ */
+export function localTodayIso(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
