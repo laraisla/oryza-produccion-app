@@ -30,6 +30,10 @@
     outline-offset: 2px;
     border-radius: 4px;
   }
+  /* Sobre fondos oscuros el anillo de foco pasa a ámbar claro para mantener contraste. */
+  .on-dark :focus-visible {
+    outline-color: var(--color-amber-300);
+  }
   ::selection {
     background: var(--color-brand-200);
   }

@@ -300,11 +300,17 @@ function MovementsColumn({
       <Panel
         id="movimientos"
         title="Movimientos candidatos"
-        subtitle="Datos del archivo importado. Elegí una propuesta para ver su evidencia."
+        subtitle={
+          oe.proposals.length > 1
+            ? "Datos del archivo importado. Elegí una propuesta para ver su evidencia."
+            : "Datos del archivo importado, con su procedencia."
+        }
       >
         {oe.proposals.length === 0 && oe.candidates.length === 0 && related.length === 0 ? (
           <p className="text-sm text-slate-700">
-            No hay movimientos importados relacionados con este pedido.{" "}
+            {oe.allocations.length > 0
+              ? "Los movimientos ya asignados figuran en «Asignaciones aprobadas». No hay otros movimientos importados para este pedido. "
+              : "No hay movimientos importados relacionados con este pedido. "}
             <Link href="/importar" className="font-medium text-brand-800 underline">
               Importar movimientos
             </Link>

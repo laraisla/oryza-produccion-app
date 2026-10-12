@@ -46,7 +46,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      <header className="border-b border-brand-900 bg-brand-900 text-white">
+      <header className="on-dark border-b border-brand-900 bg-brand-900 text-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 md:flex-row md:items-center md:justify-between">
           <Link href="/" className="flex items-baseline gap-3 rounded">
             <span className="text-lg font-extrabold tracking-wide">COBRO CLARO</span>
@@ -61,7 +61,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}
-                      className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                      className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium ${
                         active ? "bg-white text-brand-900" : "text-brand-100 hover:bg-brand-800 hover:text-white"
                       }`}
                     >
