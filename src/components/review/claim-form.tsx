@@ -6,13 +6,14 @@ import { requireDb, useCobro } from "@/components/cobro-provider";
 import { useNotice } from "@/components/notices";
 import { parseArsText } from "@/domain/money";
 import { LIMITS } from "@/domain/schemas";
+import { suggestClaimFields } from "@/extraction/rules";
 import { addClaim } from "@/storage/repository";
 
 /**
  * Registrar una declaración de pago del cliente. Es un dato del cliente, no
  * un movimiento: nunca suma dinero conciliado.
  */
-export function ClaimForm({ orderId, onDone }: { orderId: string; onDone: () => void }) {
+export function ClaimForm({ orderId, orderReference, onDone }: { orderId: string; orderReference: string; onDone: () => void }) {
   const { db } = useCobro();
   const { notify } = useNotice();
   const id = useId();
@@ -21,6 +22,7 @@ export function ClaimForm({ orderId, onDone }: { orderId: string; onDone: () => 
   const [operation, setOperation] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [hints, setHints] = useState<string[]>([]);
   const running = useRef(false);
 
   async function save() {
@@ -79,6 +81,29 @@ export function ClaimForm({ orderId, onDone }: { orderId: string; onDone: () => 
           onChange={(e) => setText(e.target.value)}
           placeholder="Ya te transferí los $18.000…"
         />
+      </div>
+      <div>
+        <button
+          type="button"
+          className="btn-secondary"
+          disabled={text.trim() === ""}
+          onClick={() => {
+            const s = suggestClaimFields(text, orderReference);
+            if (s.amountText) setAmount(s.amountText);
+            if (s.operation) setOperation(s.operation);
+            setHints([
+              ...(s.amountText || s.operation ? ["Campos sugeridos por reglas a partir del texto. Revisalos."] : ["No se reconoció importe ni operación: completalos si figuran en el texto."]),
+              ...s.notes,
+            ]);
+          }}
+        >
+          Sugerir desde el texto (reglas)
+        </button>
+        {hints.map((h) => (
+          <p key={h} className="field-hint" aria-live="polite">
+            {h}
+          </p>
+        ))}
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         <div>

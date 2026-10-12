@@ -180,7 +180,7 @@ function OrderColumn({ oe }: { oe: OrderEvaluation }) {
           ))}
         </ul>
         {addingClaim ? (
-          <ClaimForm orderId={o.id} onDone={() => setAddingClaim(false)} />
+          <ClaimForm orderId={o.id} orderReference={o.reference} onDone={() => setAddingClaim(false)} />
         ) : (
           <button type="button" className="btn-secondary mt-3" onClick={() => setAddingClaim(true)}>
             <Plus aria-hidden className="size-4" /> Registrar declaración
