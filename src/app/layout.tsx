@@ -2,7 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Oryza · Cosechas",
+  // Cada página puede poner su título; se muestra como "Cargar cosecha · Oryza".
+  title: { default: "Oryza · Cosechas", template: "%s · Oryza" },
   description: "Registro de cosechas de arroz por lote",
 };
 
