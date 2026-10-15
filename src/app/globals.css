@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/*
+ * Texto un poco más grande que el normal: se lee mejor al sol y con el
+ * celular en la mano. Usamos fuentes del sistema (las de Tailwind por
+ * defecto), así no hay que descargar nada y carga rápido con poca señal.
+ */
+html {
+  font-size: 112.5%;
+}
