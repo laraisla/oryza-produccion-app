@@ -71,6 +71,9 @@ export const qualitySchema = z.object({
   documentRef: z.string().optional().nullable(),
   verificationStatus: verificationStatusSchema,
   validUntil: optionalDate('Vigencia del análisis'),
+}).refine((q) => q.verificationStatus !== 'verified' || Boolean(q.documentRef?.trim()), {
+  message: 'Para marcar la calidad como verificada indicar el informe o documento de respaldo',
+  path: ['documentRef'],
 });
 
 export const lotSchema = z.object({

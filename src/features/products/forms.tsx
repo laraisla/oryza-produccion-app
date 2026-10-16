@@ -358,7 +358,7 @@ export function LotFormDialog({ lot, productId, open, onOpenChange }: { lot?: Lo
                 <Field label="Responsable del análisis">
                   {(p) => <Input {...p} value={form.quality.analyst ?? ''} onChange={(e) => setQuality({ analyst: e.target.value })} />}
                 </Field>
-                <Field label="Documento respaldatorio">
+                <Field label="Documento respaldatorio" error={errors['quality.documentRef']}>
                   {(p) => <Input {...p} value={form.quality.documentRef ?? ''} onChange={(e) => setQuality({ documentRef: e.target.value })} placeholder="N.º de informe" />}
                 </Field>
                 <Field label="Estado de verificación" hint="Verificado solo con informe de laboratorio identificado">

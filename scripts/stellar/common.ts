@@ -13,12 +13,12 @@ export function argValue(name: string): string | undefined {
 }
 
 export function selectedNetwork(): StellarNetworkConfig {
-  const id = (argValue('network') ?? process.env.STELLAR_NETWORK ?? 'testnet') as StellarNetworkId;
+  const id = (argValue('network') || process.env.STELLAR_NETWORK || 'testnet') as StellarNetworkId;
   const base = STELLAR_NETWORKS[id];
   if (!base) {
     throw new Error(`Red desconocida: ${id}. Opciones: ${Object.keys(STELLAR_NETWORKS).join(', ')}`);
   }
-  const rpcUrl = process.env.STELLAR_RPC_URL ?? base.rpcUrl;
+  const rpcUrl = process.env.STELLAR_RPC_URL || base.rpcUrl;
   return { ...base, rpcUrl };
 }
 
