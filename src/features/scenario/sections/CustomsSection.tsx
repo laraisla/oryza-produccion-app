@@ -1,5 +1,5 @@
-import { ExternalLink, Landmark } from 'lucide-react';
-import { VerificationBadge } from '@/components/status';
+import { Landmark } from 'lucide-react';
+import { EvidenceRef, VerificationBadge } from '@/components/status';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Field, Input, Textarea } from '@/components/ui/form';
@@ -43,7 +43,7 @@ export function RequirementsPreview({ draft }: { draft: ScenarioDraft }) {
               <TD><Badge tone={r.category.startsWith('official') ? 'petrol' : r.category === 'buyer' ? 'warning' : 'neutral'}>{REQUIREMENT_CATEGORIES[r.category]}</Badge></TD>
               <TD className="text-xs">{r.issuer}</TD>
               <TD className="max-w-[260px] text-xs text-slate-600">{r.requiredIf ?? r.description}</TD>
-              <TD className="text-xs">{r.sourceUrl ? <a className="inline-flex items-center gap-1 text-petrol-700 hover:underline" href={r.sourceUrl} target="_blank" rel="noreferrer">{r.sourceName} <ExternalLink className="size-3" /></a> : r.sourceName}{r.verifiedAt ? <p className="text-slate-500">Verificado {r.verifiedAt}</p> : null}</TD>
+              <TD className="text-xs">{r.sourceUrl ? <EvidenceRef value={r.sourceUrl} label={r.sourceName} className="gap-1" /> : r.sourceName}{r.verifiedAt ? <p className="text-slate-500">Verificado {r.verifiedAt}</p> : null}</TD>
               <TD><VerificationBadge status={r.verificationStatus} /></TD>
             </TR>
           ))}

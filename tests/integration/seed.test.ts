@@ -20,6 +20,15 @@ describe('datos demo', () => {
     }
   });
 
+  it('ningún dato figura como verificado sin respaldo identificado', () => {
+    for (const r of db.verifications.filter((v) => v.status === 'verified')) {
+      expect(r.evidenceUrl || r.evidenceDocumentId, r.dataLabel).toBeTruthy();
+    }
+    for (const req of db.requirements.filter((x) => x.verificationStatus === 'verified')) expect(req.sourceUrl, req.name).toBeTruthy();
+    for (const lot of db.lots.filter((l) => l.quality.verificationStatus === 'verified')) expect(lot.quality.documentRef, lot.code).toBeTruthy();
+    for (const rate of db.fxRates.filter((r) => r.status === 'verified')) expect(rate.sourceUrl).toBeTruthy();
+  });
+
   it('OP-2026-0001 conserva producto, lote, precio, cantidad y documentos', () => {
     const op = db.operations.find((o) => o.code === 'OP-2026-0001')!;
     expect(op.quantityT).toBe('40');

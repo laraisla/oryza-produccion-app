@@ -14,6 +14,7 @@
     "test:contract": "cd contracts && cargo test",
     "build:contract": "cd contracts && cargo build --target wasm32v1-none --release",
     "test:db": "bash supabase/tests/run-local.sh",
+    "db:seed": "tsx --tsconfig tsconfig.node.json scripts/db/export-seed.ts",
     "stellar:deploy": "tsx --tsconfig tsconfig.node.json scripts/stellar/deploy.ts",
     "stellar:demo": "tsx --tsconfig tsconfig.node.json scripts/stellar/demo-deal.ts",
     "stellar:verify": "tsx --tsconfig tsconfig.node.json scripts/stellar/verify.ts",

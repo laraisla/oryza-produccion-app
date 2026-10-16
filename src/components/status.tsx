@@ -1,4 +1,5 @@
-import { FlaskConical, ShieldAlert, ShieldCheck, ShieldQuestion, Timer } from 'lucide-react';
+import { ExternalLink, FileText, FlaskConical, ShieldAlert, ShieldCheck, ShieldQuestion, Timer } from 'lucide-react';
+import type { ReactNode } from 'react';
 import {
   DOCUMENT_STATUS,
   OPERATION_STATUS,
@@ -20,6 +21,7 @@ import {
 } from '@/domain/catalogs';
 import { MATCH_STATUS_LABEL, type MatchStatus } from '@/domain/matching';
 import { Badge, type BadgeTone } from './ui/badge';
+import { cn } from './ui/cn';
 import { Tooltip } from './ui/misc';
 
 const VERIFICATION_TONE: Record<VerificationStatus, BadgeTone> = {
@@ -141,5 +143,27 @@ export function DemoBadge() {
         <Badge tone="warning">DEMO · datos ficticios</Badge>
       </span>
     </Tooltip>
+  );
+}
+
+/**
+ * Respaldo de un dato: enlace cuando es una URL (externa o una ruta interna `#/...`)
+ * y texto cuando es una referencia documental sin URL (p. ej. "Informe LAB-0928").
+ */
+export function EvidenceRef({ value, label = 'respaldo', className }: { value: string; label?: ReactNode; className?: string }) {
+  const external = /^https?:\/\//i.test(value);
+  if (external || value.startsWith('#/')) {
+    return (
+      <a href={value} {...(external ? { target: '_blank', rel: 'noreferrer' } : {})} className={cn('inline-flex items-center gap-0.5 text-petrol-700 hover:underline', className)}>
+        {label}
+        {external ? <ExternalLink className="size-3" aria-hidden /> : null}
+      </a>
+    );
+  }
+  return (
+    <span className={cn('inline-flex items-center gap-0.5 text-slate-600', className)} title="Referencia documental (sin URL)">
+      <FileText className="size-3 shrink-0" aria-hidden />
+      {value}
+    </span>
   );
 }

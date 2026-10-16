@@ -1,6 +1,6 @@
-import { ExternalLink, History, Search, ShieldCheck } from 'lucide-react';
+import { History, Search, ShieldCheck } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { VerificationBadge } from '@/components/status';
+import { EvidenceRef, VerificationBadge } from '@/components/status';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -166,7 +166,7 @@ export default function VerificationPage() {
               <TR key={r.id}>
                 <TD><p className="font-medium text-slate-800">{r.dataLabel}</p><p className="text-[11px] text-slate-500">{KIND_LABEL[r.subject.kind]}</p></TD>
                 <TD className="max-w-[200px] text-xs">{r.value} <span className="text-slate-500">{r.unit !== 'texto' ? r.unit : ''}</span></TD>
-                <TD className="max-w-[260px] text-xs">{r.source}{r.evidenceUrl ? <a href={r.evidenceUrl} target="_blank" rel="noreferrer" className="ml-1 inline-flex items-center gap-0.5 text-petrol-700 hover:underline">respaldo <ExternalLink className="size-3" /></a> : null}</TD>
+                <TD className="max-w-[260px] text-xs">{r.source}{r.evidenceUrl ? <EvidenceRef value={r.evidenceUrl} className="ml-1" /> : null}</TD>
                 <TD className="text-xs">{fmtDate(r.consultedAt)}</TD>
                 <TD className="text-xs">{fmtDate(r.validUntil)}</TD>
                 <TD className="text-xs">{r.responsible}</TD>
