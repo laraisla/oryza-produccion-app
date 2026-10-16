@@ -150,3 +150,4 @@ playwright-report/
 
 # Evidencias de la red local efímera (no verificables públicamente)
 deployments/local*.json
+contracts/**/test_snapshots/
