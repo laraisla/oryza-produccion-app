@@ -4,8 +4,9 @@
  * El hash de términos se calcula sobre un JSON canónico: claves ordenadas,
  * sin espacios, sin valores `undefined`. Los importes viajan como strings
  * decimales para no depender de la representación binaria de los números.
- * Funciona igual en navegador y en Node 22 (WebCrypto global).
+ * SHA-256 síncrono (@noble/hashes): idéntico en navegador, Node y pruebas.
  */
+import { sha256 } from '@noble/hashes/sha2.js';
 
 export type CanonicalValue =
   | string
@@ -52,19 +53,30 @@ export function hexToBytes(hex: string): Uint8Array {
   return out;
 }
 
-export async function sha256Hex(input: string | Uint8Array): Promise<string> {
+export function sha256HexSync(input: string | Uint8Array): string {
   const data = typeof input === 'string' ? new TextEncoder().encode(input) : input;
-  const digest = await globalThis.crypto.subtle.digest('SHA-256', data as BufferSource);
-  return bytesToHex(new Uint8Array(digest));
+  return bytesToHex(sha256(data));
+}
+
+export async function sha256Hex(input: string | Uint8Array): Promise<string> {
+  return sha256HexSync(input);
 }
 
 export const DEAL_KEY_PREFIX = 'agromatch:deal:v1:';
 
 /** Clave on-chain de una operación: no revela el identificador interno. */
-export function dealKeyFor(operationId: string): Promise<string> {
-  return sha256Hex(`${DEAL_KEY_PREFIX}${operationId}`);
+export function dealKeyForSync(operationId: string): string {
+  return sha256HexSync(`${DEAL_KEY_PREFIX}${operationId}`);
 }
 
-export function termsHashFor(terms: CanonicalValue): Promise<string> {
-  return sha256Hex(canonicalJson(terms));
+export function termsHashForSync(terms: CanonicalValue): string {
+  return sha256HexSync(canonicalJson(terms));
+}
+
+export async function dealKeyFor(operationId: string): Promise<string> {
+  return dealKeyForSync(operationId);
+}
+
+export async function termsHashFor(terms: CanonicalValue): Promise<string> {
+  return termsHashForSync(terms);
 }

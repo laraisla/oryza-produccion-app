@@ -233,7 +233,7 @@ async function submit(
   const signed = TransactionBuilder.fromXDR(signedXdr, network.networkPassphrase);
   const sent = await server.sendTransaction(signed);
   if (sent.status === 'ERROR' || sent.status === 'TRY_AGAIN_LATER') {
-    const detail = sent.errorResult ? sent.errorResult.result().switch().name : sent.status;
+    const detail = sent.errorResult ? sent.errorResult.result.type : sent.status;
     throw new StellarContractError(`La red rechazó la transacción (${detail}).`);
   }
 
