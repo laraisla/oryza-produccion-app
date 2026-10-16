@@ -64,18 +64,7 @@ export function keypairSigner(keypair: Keypair): TxSigner {
   };
 }
 
-export interface DeploymentRecord {
-  network: StellarNetworkId;
-  networkPassphrase: string;
-  rpcUrl: string;
-  contractId: string;
-  wasmHash: string;
-  deployer: string;
-  uploadTx: { hash: string; ledger: number; createdAt: number };
-  createTx: { hash: string; ledger: number; createdAt: number };
-  deployedAt: string;
-  explorer?: { contract?: string; uploadTx?: string; createTx?: string };
-}
+export type { DeploymentRecord } from '../../src/integrations/stellar/evidence';
 
 export function deploymentPath(network: StellarNetworkConfig): string {
   return resolve(ROOT, 'deployments', `${network.id}.json`);

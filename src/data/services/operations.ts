@@ -1,4 +1,4 @@
-import type { DocumentStatus, DocumentType } from '@/domain/catalogs';
+import { DOCUMENT_STATUS, type DocumentStatus, type DocumentType } from '@/domain/catalogs';
 import { dec, toPlain } from '@/domain/decimal';
 import { validateDocumentTransition } from '@/domain/documents';
 import { reconcile } from '@/domain/reconciliation';
@@ -26,6 +26,7 @@ export const ALLOWED_MIME = [
   'application/json',
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-excel',
 ];
 
 function sellerOperation(db: Database, ctx: ServiceContext, operationId: string, action: 'operation.manage' | 'finance.manage') {
@@ -275,13 +276,13 @@ export function changeDocumentStatus(db: Database, ctx: ServiceContext, document
     if (operation.status === 'confirmed') operation.status = 'in_preparation';
     trace(draft, ctx, {
       type: 'document_updated',
-      title: `${d.name}: ${from} → ${to}`,
+      title: `${d.name}: ${DOCUMENT_STATUS[from]} → ${DOCUMENT_STATUS[to]}`,
       detail: note ?? null,
       operationId: d.operationId,
       entity: { kind: 'document', id: d.id },
       shared: d.sharedWithCounterparty,
     });
-    audit(draft, ctx, 'document', d.id, 'status', `"${d.name}": ${from} → ${to}`, [{ field: 'status', before: from, after: to }]);
+    audit(draft, ctx, 'document', d.id, 'status', `"${d.name}": ${DOCUMENT_STATUS[from]} → ${DOCUMENT_STATUS[to]}`, [{ field: 'status', before: from, after: to }]);
     return d;
   });
 }

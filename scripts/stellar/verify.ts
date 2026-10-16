@@ -6,7 +6,7 @@
 import { existsSync } from 'node:fs';
 import { DealsContractClient } from '../../src/integrations/stellar/dealsClient';
 import { deploymentPath, evidencePath, readJson, selectedNetwork, type DeploymentRecord } from './common';
-import type { EvidenceFile } from './demo-deal';
+import type { EvidenceFile } from '../../src/integrations/stellar/evidence';
 
 async function main() {
   const network = selectedNetwork();

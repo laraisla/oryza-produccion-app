@@ -17,7 +17,8 @@
     "stellar:deploy": "tsx --tsconfig tsconfig.node.json scripts/stellar/deploy.ts",
     "stellar:demo": "tsx --tsconfig tsconfig.node.json scripts/stellar/demo-deal.ts",
     "stellar:verify": "tsx --tsconfig tsconfig.node.json scripts/stellar/verify.ts",
-    "screenshots": "tsx --tsconfig tsconfig.node.json scripts/screenshots.ts"
+    "screenshots": "tsx --tsconfig tsconfig.node.json scripts/screenshots.ts",
+    "e2e": "tsx --tsconfig tsconfig.node.json scripts/e2e.ts"
   },
   "dependencies": {
     "@noble/hashes": "2.4.0",

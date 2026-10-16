@@ -1,4 +1,4 @@
-import type { VerificationStatus } from '@/domain/catalogs';
+import { VERIFICATION_STATUS, type VerificationStatus } from '@/domain/catalogs';
 import { dec, isDecimalString, toPlain } from '@/domain/decimal';
 import { validateVerificationChange } from '@/domain/verification';
 import { assertCan } from '../access';
@@ -117,7 +117,7 @@ export function changeVerification(db: Database, ctx: ServiceContext, recordId: 
     if (change.value) r.value = change.value;
     if (change.note) r.notes = change.note;
     propagate(draft, r);
-    audit(draft, ctx, 'verification', r.id, 'status', `${r.dataLabel}: ${r.history.at(-1)!.from} → ${r.status}`);
+    audit(draft, ctx, 'verification', r.id, 'status', `${r.dataLabel}: ${VERIFICATION_STATUS[r.history.at(-1)!.from]} → ${VERIFICATION_STATUS[r.status]}`);
     return r;
   });
 }

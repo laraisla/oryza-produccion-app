@@ -9,6 +9,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { DealsContractClient, type ConfirmedTx } from '../../src/integrations/stellar/dealsClient';
 import { explorerTxUrl } from '../../src/integrations/stellar/networks';
+import type { EvidenceFile, EvidenceRecord, EvidenceTx } from '../../src/integrations/stellar/evidence';
 import { dealKeyFor, termsHashFor, type CanonicalValue } from '../../src/integrations/stellar/terms';
 import {
   argValue,
@@ -21,35 +22,6 @@ import {
   writeJson,
   type DeploymentRecord,
 } from './common';
-
-export interface EvidenceTx {
-  action: 'create_deal' | 'accept_deal';
-  hash: string;
-  ledger: number;
-  createdAt: number;
-  status: 'SUCCESS';
-  explorerUrl?: string;
-}
-
-export interface EvidenceRecord {
-  operationId: string;
-  operationCode?: string;
-  quotationVersionId?: string;
-  dealKey: string;
-  termsHash: string;
-  termsVersion: number;
-  seller: string;
-  buyer: string;
-  transactions: EvidenceTx[];
-  onChainStatus: string;
-  checkedAt: string;
-}
-
-export interface EvidenceFile {
-  network: string;
-  contractId: string;
-  records: EvidenceRecord[];
-}
 
 async function loadTerms(): Promise<{
   operationId: string;

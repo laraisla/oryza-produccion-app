@@ -21,7 +21,7 @@ import { acceptQuotationVersion, addQuotationVersion, createQuotationFromScenari
 import { createScenario, updateScenario } from './services/scenarios';
 import type { ServiceContext } from './services/context';
 
-export const SEED_VERSION = 'demo-2026-10.1';
+export const SEED_VERSION = 'demo-2026-10.2';
 
 export const IDS = {
   orgLitoral: sid('org-litoral'),
@@ -413,6 +413,11 @@ export function runDemoFlow(base: Database): Database {
   db = uploadDocumentVersion(db, seller(), packing.id, demoDoc('Packing list OP-2026-0001', '1.600 bolsas de 25 kg; 2 contenedores de 20 pies; peso bruto 40.192 kg (demo).')).db;
   db = changeDocumentStatus(db, seller(), packing.id, 'submitted').db;
   db = changeDocumentStatus(db, seller(), packing.id, 'verified').db;
+  const phyto = byType('phytosanitary_certificate');
+  db = uploadDocumentVersion(db, seller(), phyto.id, demoDoc('Certificado fitosanitario (demo)', 'Documento ficticio: en una operación real lo emite SENASA si el destino lo exige.')).db;
+  db = changeDocumentStatus(db, seller(), phyto.id, 'submitted').db;
+  const origin = byType('certificate_of_origin');
+  db = changeDocumentStatus(db, seller(), origin.id, 'not_applicable', 'El importador no solicitó preferencia arancelaria (demo).').db;
   const permit = byType('export_permit');
   db = uploadDocumentVersion(db, seller(), permit.id, demoDoc('Permiso de embarque (demo)', 'Número ficticio 26001EC01000045D. Oficializado por despachante demo.')).db;
   db = changeDocumentStatus(db, seller(), permit.id, 'submitted').db;
