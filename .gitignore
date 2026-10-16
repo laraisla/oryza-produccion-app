@@ -141,3 +141,12 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# AgroMatch COMEX
+contracts/target/
+.stellar/
+test-results/
+playwright-report/
+
+# Evidencias de la red local efímera (no verificables públicamente)
+deployments/local*.json
