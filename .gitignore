@@ -41,3 +41,6 @@ package-lock.json
 *.njsproj
 *.sln
 *.sw?
+
+# Vercel (salida de compilación y vínculo local de la CLI)
+.vercel

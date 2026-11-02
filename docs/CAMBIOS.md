@@ -1,3 +1,9 @@
+# Publicación en Vercel
+
+- `vercel.json`: Vercel compila con `NITRO_PRESET=vercel bun run build` (servidor en Node 22, salida en `.vercel/output`). Lovable y Cloudflare no leen este archivo: su compilación no cambia.
+- Rama de producción en Vercel: `claude/youthful-lamport-niwhex`. `main` queda libre porque el PR #1 (COBRO CLARO) es otra aplicación que ocupa la raíz del repo.
+- Funciona sin variables de entorno. Opcionales: `WHATSAPP_API_KEY` y las de Supabase (`SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`) para el webhook de WhatsApp real; sin ellas el panel muestra "Pendiente de configuración".
+
 # Guía de bienvenida en el selector de espacio de trabajo
 
 - `src/components/guia-bienvenida.tsx` (nuevo): debajo de las opciones Vendedor local / Exportador, una guía que se recorre deslizando: qué es AgroGlobal, qué resuelve, cómo funciona (7 pasos + ejemplo de matching), espacios de trabajo, confianza verificable con Stellar, asistente por WhatsApp, video explicativo y cierre con acceso a ambos espacios.
