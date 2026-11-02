@@ -1,0 +1,374 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * AgroGlobal COMEX — Design system
+ * Identidad agro: verde bosque institucional, verde cultivo, dorado
+ * arroz y marfil; esmeralda para oportunidades, ámbar para pendientes,
+ * rojo moderado.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-muted: var(--success-muted);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-muted: var(--warning-muted);
+  --color-danger-muted: var(--danger-muted);
+  --color-info: var(--info);
+  --color-info-muted: var(--info-muted);
+}
+
+:root {
+  /* Paleta agro: verde bosque #173C32 · verde cultivo #34765B ·
+     dorado arroz #D5B36B · marfil #F6F3E9 · grafito #182A2C */
+  --radius: 0.625rem;
+  --background: oklch(0.985 0.006 95);
+  --foreground: #182a2c;
+  --card: oklch(1 0 0);
+  --card-foreground: #182a2c;
+  --popover: oklch(1 0 0);
+  --popover-foreground: #182a2c;
+  --primary: #173c32;
+  --primary-foreground: #f6f3e9;
+  --secondary: oklch(0.955 0.012 95);
+  --secondary-foreground: #173c32;
+  --muted: oklch(0.955 0.012 95);
+  --muted-foreground: oklch(0.5 0.02 190);
+  --accent: oklch(0.945 0.025 150);
+  --accent-foreground: #173c32;
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: #f6f3e9;
+  --border: oklch(0.91 0.012 95);
+  --input: oklch(0.91 0.012 95);
+  --ring: #34765b;
+  --chart-1: #34765b;
+  --chart-2: #173c32;
+  --chart-3: #d5b36b;
+  --chart-4: oklch(0.6 0.16 300);
+  --chart-5: oklch(0.62 0.18 25);
+  --sidebar: #173c32;
+  --sidebar-foreground: #f6f3e9;
+  --sidebar-primary: #d5b36b;
+  --sidebar-primary-foreground: #182a2c;
+  --sidebar-accent: #24503f;
+  --sidebar-accent-foreground: #f6f3e9;
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: #d5b36b;
+  --success: oklch(0.55 0.14 165);
+  --success-foreground: oklch(0.98 0.01 160);
+  --success-muted: oklch(0.94 0.05 160);
+  --warning: oklch(0.68 0.15 70);
+  --warning-foreground: oklch(0.3 0.06 70);
+  --warning-muted: oklch(0.95 0.06 85);
+  --danger-muted: oklch(0.94 0.04 25);
+  --info: oklch(0.45 0.05 175);
+  --info-muted: oklch(0.95 0.02 150);
+}
+
+.dark {
+  --background: oklch(0.17 0.015 200);
+  --foreground: #f6f3e9;
+  --card: #182a2c;
+  --card-foreground: #f6f3e9;
+  --popover: #182a2c;
+  --popover-foreground: #f6f3e9;
+  --primary: oklch(0.75 0.1 160);
+  --primary-foreground: #182a2c;
+  --secondary: oklch(0.27 0.02 190);
+  --secondary-foreground: #f6f3e9;
+  --muted: oklch(0.27 0.02 190);
+  --muted-foreground: oklch(0.72 0.015 95);
+  --accent: oklch(0.27 0.03 165);
+  --accent-foreground: #f6f3e9;
+  --destructive: oklch(0.65 0.19 25);
+  --destructive-foreground: #f6f3e9;
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: #d5b36b;
+  --chart-1: oklch(0.65 0.12 160);
+  --chart-2: oklch(0.8 0.05 95);
+  --chart-3: #d5b36b;
+  --chart-4: oklch(0.65 0.16 300);
+  --chart-5: oklch(0.65 0.18 25);
+  --sidebar: #122e27;
+  --sidebar-foreground: #f6f3e9;
+  --sidebar-primary: #d5b36b;
+  --sidebar-primary-foreground: #182a2c;
+  --sidebar-accent: #1d4237;
+  --sidebar-accent-foreground: #f6f3e9;
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: #d5b36b;
+  --success: oklch(0.65 0.15 165);
+  --success-foreground: oklch(0.15 0.03 160);
+  --success-muted: oklch(0.3 0.06 165);
+  --warning: oklch(0.75 0.15 75);
+  --warning-foreground: oklch(0.2 0.05 70);
+  --warning-muted: oklch(0.32 0.06 75);
+  --danger-muted: oklch(0.32 0.07 25);
+  --info: oklch(0.72 0.06 170);
+  --info-muted: oklch(0.3 0.04 170);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Intro en video: oculta antes del pintado si ya se vio en la pestaña;
+   si el JS nunca hidrata, se retira sola para no bloquear la app. */
+html[data-intro-omitida] #intro-splash {
+  display: none;
+}
+
+#intro-splash {
+  animation: intro-retiro 0s linear 15s forwards;
+}
+
+@keyframes intro-retiro {
+  to {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+/* ---- Animaciones de entrada del Dashboard ----
+   Solo corren al montar (fill-mode backwards: no pisan los hovers).
+   Mientras la intro en video está activa quedan en pausa y
+   arrancan durante su fade-out. */
+.am-entrada {
+  animation: am-entrada 600ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: var(--am-delay, 0ms);
+}
+
+.am-barra {
+  transform-origin: left center;
+  animation: am-barra 800ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: var(--am-delay, 0ms);
+}
+
+/* Variante breve para microinteracciones (p. ej. cobertura multilote). */
+.am-barra.am-rapida {
+  animation-duration: 420ms;
+}
+
+.am-grafico .recharts-bar-rectangle path {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: am-crecer 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(var(--am-delay, 0ms) + var(--am-i, 0) * 60ms);
+}
+.am-grafico .recharts-bar-rectangle:nth-child(2) path { --am-i: 1; }
+.am-grafico .recharts-bar-rectangle:nth-child(3) path { --am-i: 2; }
+.am-grafico .recharts-bar-rectangle:nth-child(4) path { --am-i: 3; }
+.am-grafico .recharts-bar-rectangle:nth-child(5) path { --am-i: 4; }
+.am-grafico .recharts-bar-rectangle:nth-child(6) path { --am-i: 5; }
+.am-grafico .recharts-bar-rectangle:nth-child(7) path { --am-i: 6; }
+.am-grafico .recharts-bar-rectangle:nth-child(n + 8) path { --am-i: 7; }
+
+/* ---- Utilidades para el resto de las secciones ---- */
+/* Hijos directos en cascada (tope de 10 pasos). */
+.am-escalonar > * {
+  animation: am-entrada 520ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(var(--am-delay, 0ms) + var(--am-i, 0) * 55ms);
+}
+.am-escalonar > :nth-child(2) { --am-i: 1; }
+.am-escalonar > :nth-child(3) { --am-i: 2; }
+.am-escalonar > :nth-child(4) { --am-i: 3; }
+.am-escalonar > :nth-child(5) { --am-i: 4; }
+.am-escalonar > :nth-child(6) { --am-i: 5; }
+.am-escalonar > :nth-child(7) { --am-i: 6; }
+.am-escalonar > :nth-child(8) { --am-i: 7; }
+.am-escalonar > :nth-child(9) { --am-i: 8; }
+.am-escalonar > :nth-child(n + 10) { --am-i: 9; }
+
+/* Nodo de timeline: aparece con un leve crecimiento. */
+.am-nodo {
+  animation: am-nodo 420ms cubic-bezier(0.34, 1.3, 0.64, 1) backwards;
+  animation-delay: calc(var(--am-delay, 0ms) + 120ms);
+}
+
+/* Trazo vertical de timeline que se despliega hacia abajo. */
+.am-trazo {
+  transform-origin: top center;
+  animation: am-trazo 900ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: var(--am-delay, 0ms);
+}
+
+/* Tarjeta premium: elevación de 2 px, sombra verde suave y filete dorado
+   (con box-shadow, para no pisar los bordes semánticos de cada tarjeta). */
+.am-tarjeta {
+  transition:
+    transform 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 250ms ease-out;
+}
+@media (hover: hover) {
+  .am-tarjeta:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 12px 24px -14px rgb(23 60 50 / 0.35),
+      0 2px 6px -2px rgb(23 60 50 / 0.08),
+      0 0 0 1px rgb(213 179 107 / 0.45);
+  }
+}
+.am-tarjeta:focus-within {
+  box-shadow: 0 0 0 1px rgb(213 179 107 / 0.45);
+}
+
+/* Tooltips de gráficos (Recharts) con la identidad agro. */
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  border: 1px solid rgb(213 179 107 / 0.45) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 12px 24px -14px rgb(23 60 50 / 0.35) !important;
+  padding: 8px 12px !important;
+}
+.recharts-default-tooltip .recharts-tooltip-label {
+  margin-bottom: 2px !important;
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+
+/* Transición mínima al cambiar de sección (Dashboard, Mi empresa y
+   Configuración quedan fuera: el primero tiene su propia entrada y
+   los otros dos deben sentirse instantáneos). */
+main[data-ruta]:not([data-ruta="/"]):not([data-ruta^="/mi-empresa"]):not([data-ruta^="/configuracion"]) > * {
+  animation: am-fade 200ms ease-out backwards;
+}
+
+/* Sección ya vista en esta sesión: solo un fade breve, sin cascada. */
+html[data-seccion-vista]
+  :is(.am-entrada, .am-escalonar > *, .am-barra, .am-nodo, .am-trazo, .am-grafico .recharts-bar-rectangle path) {
+  animation: am-fade 180ms ease-out backwards;
+}
+
+html:not([data-intro-omitida]):has(#intro-splash[data-fase="pendiente"], #intro-splash[data-fase="reproduciendo"])
+  :is(.am-entrada, .am-escalonar > *, .am-barra, .am-nodo, .am-trazo, .am-grafico .recharts-bar-rectangle path) {
+  animation-play-state: paused;
+}
+
+/* El selector de espacio de trabajo tapa la pantalla: la entrada espera a que se elija. */
+html:has([data-selector-modo])
+  :is(.am-entrada, .am-escalonar > *, .am-barra, .am-nodo, .am-trazo, .am-grafico .recharts-bar-rectangle path) {
+  animation-play-state: paused;
+}
+
+@keyframes am-entrada {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes am-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes am-nodo {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@keyframes am-trazo {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes am-barra {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes am-crecer {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .am-entrada,
+  .am-escalonar > *,
+  .am-barra,
+  .am-nodo,
+  .am-trazo,
+  .am-grafico .recharts-bar-rectangle path,
+  main[data-ruta] > * {
+    animation: none !important;
+  }
+
+  .am-tarjeta:hover {
+    transform: none;
+  }
+}
+
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}

@@ -1,0 +1,138 @@
+{
+  "network": "testnet",
+  "networkPassphrase": "Test SDF Network ; September 2015",
+  "rpcUrl": "https://soroban-testnet.stellar.org",
+  "aviso": "Stellar TESTNET. Activo de prueba sin valor. Cuentas de demostración.",
+  "contractId": "CAERX6PVDUP5ZQNOL7RS2JC3GKHMAYBFGGJBZ24XN5ZQYS4GTOTCHDH2",
+  "contractExplorer": "https://stellar.expert/explorer/testnet/contract/CAERX6PVDUP5ZQNOL7RS2JC3GKHMAYBFGGJBZ24XN5ZQYS4GTOTCHDH2",
+  "deployLedger": 5226202,
+  "wasmSha256": "51573fd8e93acbd6cf66e010113b6bd2592fc19e8240ea41207fbaf1b3b9c04e",
+  "testAsset": {
+    "code": "AGROUSD",
+    "issuer": "GA5QCSNSWBZBWVRYVMCTTDKIOWIRAEJG237FWFID2P273AJLMYGXLTIN",
+    "contractId": "CDO7QI6PFDEKTUUR6QPH5WMHCUKONVFCJLKHJFHOOBZ3ZK3ENTXCD3IL"
+  },
+  "accounts": {
+    "admin": "GA5QCSNSWBZBWVRYVMCTTDKIOWIRAEJG237FWFID2P273AJLMYGXLTIN",
+    "buyer": "GBP57FLASGVQ5GAPHFSOU27IOPT6ONVATESTSEJKP4EGFGGKQ5GDFDXR",
+    "seller": "GCR5OSQJKP6E4NPUQVD3GNUXVCHPEOK5UICHOWVPIOEEAPN6LN6VLQ6X",
+    "arbiter": "GCBFSUYWNPZJJ7HVZMLLC7D43YDABUWCLNRNNMPDOPI6BSQY3ZFYXS3P"
+  },
+  "deployTransactions": {
+    "deploy_contract": {
+      "hash": "3c17aac081e48f020520a6c5a3a8fa4f6fefbdd8d3abbf51b95f3f88f04e484e",
+      "url": "https://stellar.expert/explorer/testnet/tx/3c17aac081e48f020520a6c5a3a8fa4f6fefbdd8d3abbf51b95f3f88f04e484e"
+    },
+    "deploy_contract_2": {
+      "hash": "a258bf8b43ce48ec4cbf5999a244be946a87f016a974eba6596c13a1e38574de",
+      "url": "https://stellar.expert/explorer/testnet/tx/a258bf8b43ce48ec4cbf5999a244be946a87f016a974eba6596c13a1e38574de"
+    },
+    "deploy_asset_contract": {
+      "hash": "8c53d396df572f879329dc664c853025250e57e1f01e33cc646d1d217e25217a",
+      "url": "https://stellar.expert/explorer/testnet/tx/8c53d396df572f879329dc664c853025250e57e1f01e33cc646d1d217e25217a"
+    },
+    "trustline_buyer": {
+      "hash": "1f69282a9bfb8cfe54b680e30315d0dce2a1d7d01de80f57fc808c5def263966",
+      "url": "https://stellar.expert/explorer/testnet/tx/1f69282a9bfb8cfe54b680e30315d0dce2a1d7d01de80f57fc808c5def263966"
+    },
+    "trustline_seller": {
+      "hash": "2212d643695d2d230dfdb72d8941e1279f3ddd237013aa44a449c838f3a987ab",
+      "url": "https://stellar.expert/explorer/testnet/tx/2212d643695d2d230dfdb72d8941e1279f3ddd237013aa44a449c838f3a987ab"
+    },
+    "mint_buyer": {
+      "hash": "ecbdaa26b81593524f6f98fcfc809420b147bb4af74b04672129ed3a34a5b303",
+      "url": "https://stellar.expert/explorer/testnet/tx/ecbdaa26b81593524f6f98fcfc809420b147bb4af74b04672129ed3a34a5b303"
+    }
+  },
+  "deployedAt": "2026-10-16T12:44:04.137Z",
+  "agreements": [
+    {
+      "id": 0,
+      "orderRef": "OC-2026-0001",
+      "termsHash": "7644f45f04281d66327de3ed2d0cccd0ca7b760e79ff0c88be5ef9b20397b6e3",
+      "amount": "208000000000",
+      "onChainState": {
+        "amount": "208000000000",
+        "arbiter": "GCBFSUYWNPZJJ7HVZMLLC7D43YDABUWCLNRNNMPDOPI6BSQY3ZFYXS3P",
+        "buyer": "GBP57FLASGVQ5GAPHFSOU27IOPT6ONVATESTSEJKP4EGFGGKQ5GDFDXR",
+        "created_at": 1792154807,
+        "deadline": 1794746799,
+        "order_ref": "OC-2026-0001",
+        "seller": "GCR5OSQJKP6E4NPUQVD3GNUXVCHPEOK5UICHOWVPIOEEAPN6LN6VLQ6X",
+        "status": "Released",
+        "terms_hash": "7644f45f04281d66327de3ed2d0cccd0ca7b760e79ff0c88be5ef9b20397b6e3",
+        "token": "CDO7QI6PFDEKTUUR6QPH5WMHCUKONVFCJLKHJFHOOBZ3ZK3ENTXCD3IL",
+        "updated_at": 1792154827
+      },
+      "termsVerified": true,
+      "balancesAfter": {
+        "seller": "208000000000",
+        "escrowContract": "0",
+        "buyer": "792000000000"
+      },
+      "transactions": {
+        "create": {
+          "hash": "85d91d145b58624fe9f5665c1751416f1a0beff6c758169e3778b89bdbfc76b6",
+          "url": "https://stellar.expert/explorer/testnet/tx/85d91d145b58624fe9f5665c1751416f1a0beff6c758169e3778b89bdbfc76b6"
+        },
+        "accept": {
+          "hash": "9d5ee5f59630dc4001cc0187a8047b407eba5209c85eb7bd44d413a75dd016c3",
+          "url": "https://stellar.expert/explorer/testnet/tx/9d5ee5f59630dc4001cc0187a8047b407eba5209c85eb7bd44d413a75dd016c3"
+        },
+        "deposit": {
+          "hash": "67203779f65ed08cead5eef95a91cd9035a74c2cffc1bbe815165d1669cab2db",
+          "url": "https://stellar.expert/explorer/testnet/tx/67203779f65ed08cead5eef95a91cd9035a74c2cffc1bbe815165d1669cab2db"
+        },
+        "release": {
+          "hash": "8bed5f351c8c74868f287b549adb7070b2a19217c14813be7a531b8b3e97b33a",
+          "url": "https://stellar.expert/explorer/testnet/tx/8bed5f351c8c74868f287b549adb7070b2a19217c14813be7a531b8b3e97b33a"
+        }
+      },
+      "recordedAt": "2026-10-16T12:47:26.462Z"
+    },
+    {
+      "id": 1,
+      "orderRef": "OC-2026-0002",
+      "termsHash": "519fb3f9e26ab8bef94d3857af4686d7904a914797abd7dd332c83b59d95d117",
+      "amount": "52000000000",
+      "onChainState": {
+        "amount": "52000000000",
+        "arbiter": "GCBFSUYWNPZJJ7HVZMLLC7D43YDABUWCLNRNNMPDOPI6BSQY3ZFYXS3P",
+        "buyer": "GBP57FLASGVQ5GAPHFSOU27IOPT6ONVATESTSEJKP4EGFGGKQ5GDFDXR",
+        "created_at": 1792154872,
+        "deadline": 1794746866,
+        "order_ref": "OC-2026-0002",
+        "seller": "GCR5OSQJKP6E4NPUQVD3GNUXVCHPEOK5UICHOWVPIOEEAPN6LN6VLQ6X",
+        "status": "Refunded",
+        "terms_hash": "519fb3f9e26ab8bef94d3857af4686d7904a914797abd7dd332c83b59d95d117",
+        "token": "CDO7QI6PFDEKTUUR6QPH5WMHCUKONVFCJLKHJFHOOBZ3ZK3ENTXCD3IL",
+        "updated_at": 1792154902
+      },
+      "termsVerified": true,
+      "balancesAfter": {
+        "seller": "208000000000",
+        "escrowContract": "0",
+        "buyer": "792000000000"
+      },
+      "transactions": {
+        "create": {
+          "hash": "4f18968a6cd6b5cc6256f5aa612bf2c561b98b599bdbc1b78cfbf2de9c90a8e6",
+          "url": "https://stellar.expert/explorer/testnet/tx/4f18968a6cd6b5cc6256f5aa612bf2c561b98b599bdbc1b78cfbf2de9c90a8e6"
+        },
+        "accept": {
+          "hash": "28a095a29c25df87ae3f657561932c0e9e5794c1a1eda14ccb63dd6d58ef3585",
+          "url": "https://stellar.expert/explorer/testnet/tx/28a095a29c25df87ae3f657561932c0e9e5794c1a1eda14ccb63dd6d58ef3585"
+        },
+        "deposit": {
+          "hash": "76a171a140fb8af9bf3d0a8b053b74c30b23135fe87b275192424436752250f6",
+          "url": "https://stellar.expert/explorer/testnet/tx/76a171a140fb8af9bf3d0a8b053b74c30b23135fe87b275192424436752250f6"
+        },
+        "refund": {
+          "hash": "6172226f7576cdc4f2fbadab5c13a692ed2349b4ccc733b85d6efe005bcc3a81",
+          "url": "https://stellar.expert/explorer/testnet/tx/6172226f7576cdc4f2fbadab5c13a692ed2349b4ccc733b85d6efe005bcc3a81"
+        }
+      },
+      "recordedAt": "2026-10-16T12:48:30.284Z"
+    }
+  ]
+}

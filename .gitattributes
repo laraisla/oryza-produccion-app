@@ -1,0 +1,34 @@
+# ============================================================
+# Normalizacion de saltos de linea.
+#
+# Regla general: LF en el repositorio y en el working tree.
+# Sin esto, en Windows con `core.autocrlf=true` el working tree
+# queda con CRLF, `prettier` reporta miles de errores "Delete CR"
+# y cualquier edicion genera un diff masivo de fin de linea.
+# ============================================================
+* text=auto eol=lf
+
+# Scripts de Windows: deben quedar con CRLF para ejecutarse.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binarios: nunca se convierten ni se normalizan.
+*.mp4  binary
+*.mov  binary
+*.webm binary
+*.ico  binary
+*.jpg  binary
+*.jpeg binary
+*.png  binary
+*.gif  binary
+*.webp binary
+*.pdf  binary
+*.zip  binary
+*.gz   binary
+*.wasm binary
+*.woff binary
+*.woff2 binary
+*.ttf  binary
+*.otf  binary
+*.eot  binary
+*.mp3  binary

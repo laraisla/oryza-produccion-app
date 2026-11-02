@@ -1,0 +1,63 @@
+# Cambio de nombre: AgroMatch → AgroGlobal
+
+- Marca visible (títulos, metadatos, textos de la app, asistente, documentación) y nombres internos (`agroglobal-*`, `AgroGlobalEscrow`, contrato `blockchain/contracts/agroglobal-escrow`, User-Agent `AgroGlobal-BrandBot`).
+- Video de introducción: `public/agroglobal-intro.mp4`; el logotipo final dice AGROGLOBAL (misma tipografía, Open Sans, y misma animación).
+- `localStorage`: la clave pasa a `agroglobal-comex-demo-v3`; si un navegador todavía tiene `agromatch-comex-demo-v3`, se lee una vez y se migra (no se pierden los datos demo ni los acuerdos creados desde la app).
+- Stellar CLI: las identidades pasan a llamarse `agroglobal-<rol>`. Para seguir usando las cuentas del contrato desplegado, ver la nota en `blockchain/README.md`. El contrato ya desplegado en Testnet no cambia (mismo Contract ID).
+- Se conservan con el nombre anterior solo referencias a cosas que existen así: la rama `feature/agromatch-stellar`, el bundle `AgroMatch-backup-2026-10-21.bundle` y el registro histórico de abajo.
+
+# CAMBIOS — Bloque 1: recorrido comercial
+
+> Registro de cambios por bloque. El historial completo esta en los commits
+> del repositorio. El respaldo previo a la reorganizacion de la Fase 2 esta
+> en el bundle `AgroMatch-backup-2026-10-21.bundle`, fuera del repositorio.
+
+## Archivos creados
+- `src/lib/recorrido.ts` — lógica pura: ids correlativos, reparto de 1–2 lotes, cotización con `comex.ts`, operación vinculada, estado del recorrido (7 pasos).
+- `src/test/recorrido.test.ts` — tests: solicitud→matching→cotización→aceptar, idempotencia, 2 lotes, reinicio de demo.
+- `docs/CAMBIOS.md` — este registro.
+
+## Archivos modificados
+- `src/data/demo.ts` — campos opcionales de vínculo (solicitudId, lotes, operacionId / cotizacionId) en Cotizacion y Operacion. Sin datos nuevos.
+- `src/lib/store.tsx` — acciones nuevas `updateSolicitud`, `aceptarCotizacion` (idempotente, reserva stock) y `reiniciarDemoComercial`. No se tocó ninguna acción ni estado de Stellar/WhatsApp.
+- `src/routes/matching.tsx` — escenario del recorrido (50 tn, ≤5%, 25 kg, CFR), elegir 1–2 lotes y "Generar cotización".
+- `src/routes/calculadora.tsx` — la cotización lleva solicitudId; ids por máximo (sin colisiones); precio sin redondear.
+- `src/routes/cotizaciones.tsx` — aceptar usa `aceptarCotizacion` (sin operaciones duplicadas); muestra solicitud, lotes y operación con links; el detalle ya no es una copia vieja.
+- `src/routes/operaciones.tsx` — `?op=` abre el detalle; muestra solicitud/cotización; links a documentos y conciliación con `op`. (Bloque Stellar sin cambios.)
+- `src/routes/documentacion.tsx` — `?op=` carga destino/Incoterm/comprador y filtra el checklist (kosher solo si se pidió; requisitos de ejemplo por país).
+- `src/routes/conciliacion.tsx` — filtro `?op=` y ids de solicitud/cotización/operación.
+- `src/routes/trazabilidad.tsx` — ids y lotes reales en el expediente; links a operación, documentos y conciliación. (Pestaña blockchain sin cambios.)
+- `src/routes/solicitudes.tsx` — columna con cotización y operación vinculadas.
+- `src/routes/index.tsx` — tarjeta "Recorrido de demostración" (7 pasos con check derivado del store) y botón "Reiniciar demo".
+
+## Notas
+- "Reiniciar demo": el store guarda todo bajo una única clave de localStorage; borrarla borraría también chats de WhatsApp y acuerdos Stellar. Por eso se reinician solo productos, solicitudes, cotizaciones, operaciones y conciliaciones; el resto queda intacto.
+- Archivos mixtos (comercial + integración) editados solo fuera de los bloques protegidos: `store.tsx`, `operaciones.tsx`, `trazabilidad.tsx`, `demo.ts`.
+- Archivos protegidos sin cambios: `src/lib/stellar/*`, `src/components/stellar/*`, `src/routes/evidencia-stellar.tsx`, `src/routes/api/**`, `blockchain/**`, `src/data/whatsapp-demo.ts`, `src/lib/agent*.ts`, `src/routes/asistente.tsx`, `src/routes/marketplace.tsx`, `src/routes/configuracion.tsx`.
+
+## Checklist manual (7 pasos)
+1. Matching → botón "Recorrido · 50 tn…" → Buscar coincidencias (crea SOL-xxx).
+2. Elegir LOTE-B (o dos lotes) → ver asignación de toneladas.
+3. "Generar cotización" → se abre COT-2026-xxx con lote(s), 50 tn y CFR.
+4. "Aceptada" → se crea OP-2026-xxx; el ID de solicitud y de cotización aparecen en la operación.
+5. Operaciones → "Avanzar al siguiente hito" y "Ver documentos" (checklist del destino).
+6. Avanzar hasta hito 6 → "Ver conciliación" muestra el cobro de esa operación.
+7. "Expediente" → trazabilidad con los mismos ids. Dashboard: 7 checks y "Reiniciar demo".
+
+---
+# Etapa 2 — P1 y evidencia DvP (solo lectura, cliente)
+
+## Creados
+- `src/lib/horizon.ts` — consultas de solo lectura a Horizon testnet: valida hash `/^[0-9a-f]{64}$/` antes de llamar, parsea operaciones sin asumir campos, clasifica ARROZ/USDC de prueba solo si el emisor coincide, errores controlados ("Horizon no disponible"). Datos públicos únicamente.
+- `src/components/evidencia-stellar.tsx` — "Liquidaciones DvP verificadas (motor AgroFlow)": selector de 2 liquidaciones, memo, operaciones, saldos de molino y comprador, links a StellarExpert, badge "En vivo · testnet" solo con datos de Horizon, aviso de caída y texto de activos de prueba.
+- `src/test/horizon.test.ts` — hash inválido sin fetch, parseo de operaciones, memo, Horizon caído/503, respuesta incompleta.
+- `.claude/launch.json` — configuración del servidor de desarrollo para la vista previa (puerto 8080).
+
+## Modificados
+- `src/routes/trazabilidad.tsx` — pestaña nueva "Liquidaciones DvP (AgroFlow)" y lista de hashes de acuerdos propios leídos del store (validados, con link a StellarExpert). Pestañas existentes sin cambios.
+- `src/routes/operaciones.tsx` — id de operación sin salto de línea (legibilidad a 1440 px).
+- `src/components/app-shell.tsx` — "Powered by AgroMatch COMEX · Demo" (marca unificada).
+
+## Verificación
+- Recorrido completo probado en el navegador a 1440×900 (solicitud → matching → cotización → aceptar → operación → trazabilidad); la pestaña DvP mostró datos reales de Horizon.
+- Archivos protegidos en esta lista: ninguno (`src/lib/stellar/*`, `src/components/stellar/*`, `evidencia-stellar` de rutas, `api/**`, `blockchain/**`, WhatsApp, `asistente.tsx`, `marketplace.tsx`, `configuracion.tsx` sin cambios).

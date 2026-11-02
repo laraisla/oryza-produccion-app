@@ -1,0 +1,9 @@
+# Artefactos de Rust (por defecto los scripts usan un target fuera del repo)
+target/
+*.wasm
+# Claves: el Stellar CLI las guarda en ~/.config/stellar, nunca acá.
+*.toml.secret
+.soroban/
+.stellar/
+# Snapshots que soroban-sdk genera al correr los tests
+test_snapshots/

@@ -1,0 +1,20 @@
+{
+  "orden": "OC-2026-0002",
+  "tipo": "local",
+  "vendedor": "Molino Azul del Litoral S.A. (ficticia)",
+  "comprador": "Distribuidora Caribe Ltda. (ficticia)",
+  "producto": {
+    "tipoArroz": "Blanco",
+    "variedad": "Largo fino",
+    "quebradoMaxPct": 5,
+    "humedadMaxPct": 14,
+    "presentacion": "Bolsas de 25 kg"
+  },
+  "cantidadTn": 10,
+  "precioTnUsd": 520,
+  "totalUsd": 5200,
+  
+  "lugarEntrega": "Planta del vendedor, Chaco",
+  "condicionPago": "Depósito en garantía (Stellar Testnet, activo de prueba AGROUSD)",
+  "nota": "Datos ficticios de demostración. Sin valor comercial."
+}
