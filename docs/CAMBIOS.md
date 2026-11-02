@@ -1,3 +1,11 @@
+# Guía de bienvenida en el selector de espacio de trabajo
+
+- `src/components/guia-bienvenida.tsx` (nuevo): debajo de las opciones Vendedor local / Exportador, una guía que se recorre deslizando: qué es AgroGlobal, qué resuelve, cómo funciona (7 pasos + ejemplo de matching), espacios de trabajo, confianza verificable con Stellar, asistente por WhatsApp, video explicativo y cierre con acceso a ambos espacios.
+- `src/components/app-shell.tsx`: el selector pasa a tener scroll propio, indicador "Conocé cómo funciona AgroGlobal" y atajo flotante para volver a elegir el espacio. Las opciones del selector no cambian.
+- `src/styles.css`: aparición de secciones ligada al scroll (CSS, sin JS) y trazo animado del diagrama; ambos se desactivan con movimiento reducido.
+- Video explicativo: `public/agroglobal-guia.mp4` (3:45, 24,7 MiB; el límite de Cloudflare es 25 MiB por archivo) con portada `public/agroglobal-guia-portada.jpg`. No se descarga hasta tocar play (`preload="none"`). Para reemplazarlo, alcanza con cambiar `VIDEO_GUIA` en el componente.
+- Pendiente: el video todavía muestra la marca anterior (AgroMatch) en la placa de título, subtítulos, grabaciones de la app y placa final.
+
 # Cambio de nombre: AgroMatch → AgroGlobal
 
 - Marca visible (títulos, metadatos, textos de la app, asistente, documentación) y nombres internos (`agroglobal-*`, `AgroGlobalEscrow`, contrato `blockchain/contracts/agroglobal-escrow`, User-Agent `AgroGlobal-BrandBot`).

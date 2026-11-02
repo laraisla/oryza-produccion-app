@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Toaster } from "@/components/ui/sonner";
+import { AtajoSelector, GuiaBienvenida, IndicadorDeslizar } from "@/components/guia-bienvenida";
 import { toast } from "sonner";
 import molinoAzulLogo from "@/assets/molino-azul-logo.jpg";
 
@@ -33,39 +34,67 @@ function SelectorModo() {
   const { dispatch } = useAppStore();
   const org = useOrganizacionActiva();
   const opciones = modosDisponibles(org);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [atajo, setAtajo] = useState(false);
+  const elegir = (modo: Modo) => dispatch({ type: "elegirModo", rol: ROL_POR_MODO[modo], modo });
+  const irA = (top: number) => scrollRef.current?.scrollTo({ top, behavior: "smooth" });
+  // El atajo al selector aparece al pasar la primera pantalla y se oculta al llegar al cierre.
+  const alDeslizar = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const restante = el.scrollHeight - el.scrollTop - el.clientHeight;
+    setAtajo(el.scrollTop > el.clientHeight * 0.6 && restante > 420);
+  };
   return (
-    <div data-selector-modo className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-3xl rounded-xl border border-border bg-card p-6 shadow-xl sm:p-8">
-        <h1 className="font-display text-xl font-bold">AgroGlobal COMEX</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {org.nombreComercial} — seleccioná el espacio de trabajo
-        </p>
-        <div className={cn("mt-6 grid gap-4", opciones.length > 1 ? "sm:grid-cols-2" : "")}>
-          {opciones.map((modo) => {
-            const info = MODOS[modo];
-            return (
-              <button
-                key={modo}
-                onClick={() => dispatch({ type: "elegirModo", rol: ROL_POR_MODO[modo], modo })}
-                className="group flex flex-col items-center rounded-xl border border-border bg-background px-6 py-8 text-center transition-colors hover:border-primary hover:bg-accent"
-              >
-                <Sprout className="h-8 w-8 text-primary transition-transform group-hover:scale-110" />
-                <span className="mt-4 font-display text-lg font-semibold">{info.label}</span>
-                <span className="mt-2 text-sm leading-snug text-muted-foreground">{info.descripcion}</span>
-                <span className="mt-4 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
-                  {info.chip}
-                </span>
-              </button>
-            );
-          })}
+    <>
+      <div
+        ref={scrollRef}
+        onScroll={alDeslizar}
+        data-selector-modo
+        className="fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-background/95 backdrop-blur-sm"
+      >
+        {/* Primera pantalla: selector de espacio de trabajo (sin cambios) */}
+        <div className="relative flex min-h-[100svh] flex-col items-center justify-center p-4 pb-24">
+          <div className="w-full max-w-3xl rounded-xl border border-border bg-card p-6 shadow-xl sm:p-8">
+            <h1 className="font-display text-xl font-bold">AgroGlobal COMEX</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {org.nombreComercial} — seleccioná el espacio de trabajo
+            </p>
+            <div className={cn("mt-6 grid gap-4", opciones.length > 1 ? "sm:grid-cols-2" : "")}>
+              {opciones.map((modo) => {
+                const info = MODOS[modo];
+                return (
+                  <button
+                    key={modo}
+                    onClick={() => elegir(modo)}
+                    className="group flex flex-col items-center rounded-xl border border-border bg-background px-6 py-8 text-center transition-colors hover:border-primary hover:bg-accent"
+                  >
+                    <Sprout className="h-8 w-8 text-primary transition-transform group-hover:scale-110" />
+                    <span className="mt-4 font-display text-lg font-semibold">{info.label}</span>
+                    <span className="mt-2 text-sm leading-snug text-muted-foreground">{info.descripcion}</span>
+                    <span className="mt-4 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
+                      {info.chip}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="mt-5 text-center">
+              <Link to="/registro-empresa" className="text-xs text-muted-foreground underline hover:text-foreground">
+                Registrar otra empresa con branding automático
+              </Link>
+            </div>
+          </div>
+          <div className="absolute inset-x-0 bottom-6 flex justify-center">
+            <IndicadorDeslizar onClick={() => irA(scrollRef.current?.clientHeight ?? 0)} />
+          </div>
         </div>
-        <div className="mt-5 text-center">
-          <Link to="/registro-empresa" className="text-xs text-muted-foreground underline hover:text-foreground">
-            Registrar otra empresa con branding automático
-          </Link>
-        </div>
+        {/* Debajo: guía de bienvenida (qué es, cómo funciona, video) */}
+        <GuiaBienvenida opciones={opciones} onElegir={elegir} onIrArriba={() => irA(0)} />
       </div>
-    </div>
+      {/* Fuera del contenedor: con backdrop-blur, un hijo `fixed` se movería con el scroll */}
+      <AtajoSelector visible={atajo} onClick={() => irA(0)} />
+    </>
   );
 }
 

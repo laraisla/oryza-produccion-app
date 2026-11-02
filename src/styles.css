@@ -313,6 +313,29 @@ html:has([data-selector-modo])
   animation-play-state: paused;
 }
 
+/* ---- Guía de bienvenida (debajo del selector de espacio) ----
+   Cada sección aparece al entrar en pantalla, ligada al scroll
+   (sin JS). Sin soporte de scroll-driven animations, se ve fija. */
+@supports (animation-timeline: view()) {
+  .guia-revelar {
+    animation: am-entrada linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+}
+
+/* Conexiones del diagrama del ecosistema: trazo punteado en movimiento. */
+.guia-flujo {
+  stroke-dasharray: 1.6 2.2;
+  animation: guia-flujo 1.4s linear infinite;
+}
+
+@keyframes guia-flujo {
+  to {
+    stroke-dashoffset: -7.6;
+  }
+}
+
 @keyframes am-entrada {
   from {
     opacity: 0;
@@ -359,7 +382,9 @@ html:has([data-selector-modo])
   .am-nodo,
   .am-trazo,
   .am-grafico .recharts-bar-rectangle path,
-  main[data-ruta] > * {
+  main[data-ruta] > *,
+  .guia-revelar,
+  .guia-flujo {
     animation: none !important;
   }
 
