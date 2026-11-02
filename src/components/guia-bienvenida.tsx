@@ -18,6 +18,7 @@ import {
   FileText,
   Globe2,
   Handshake,
+  Info,
   Lock,
   MessageCircle,
   Play,
@@ -29,7 +30,6 @@ import {
   Sprout,
   Store,
   Truck,
-  Undo2,
   Users,
   Waypoints,
   Wheat,
@@ -825,6 +825,17 @@ function Video() {
           </div>
         )}
       </div>
+      {VIDEO_GUIA && (
+        // El video se grabó con el nombre anterior de la plataforma.
+        <p className="mx-auto mt-5 flex w-fit max-w-4xl items-start gap-2.5 rounded-xl border border-border bg-accent/70 px-4 py-3 text-left text-sm leading-snug text-muted-foreground">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-chart-1" />
+          <span>
+            Antes de llamarse AgroGlobal, la plataforma se llamaba{" "}
+            <strong className="font-semibold text-foreground">AgroMatch COMEX</strong>: por eso en
+            el video aparece con ese nombre.
+          </span>
+        </p>
+      )}
     </Seccion>
   );
 }

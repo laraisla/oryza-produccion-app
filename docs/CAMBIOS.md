@@ -4,7 +4,7 @@
 - `src/components/app-shell.tsx`: el selector pasa a tener scroll propio, indicador "Conocé cómo funciona AgroGlobal" y atajo flotante para volver a elegir el espacio. Las opciones del selector no cambian.
 - `src/styles.css`: aparición de secciones ligada al scroll (CSS, sin JS) y trazo animado del diagrama; ambos se desactivan con movimiento reducido.
 - Video explicativo: `public/agroglobal-guia.mp4` (3:45, 24,7 MiB; el límite de Cloudflare es 25 MiB por archivo) con portada `public/agroglobal-guia-portada.jpg`. No se descarga hasta tocar play (`preload="none"`). Para reemplazarlo, alcanza con cambiar `VIDEO_GUIA` en el componente.
-- Pendiente: el video todavía muestra la marca anterior (AgroMatch) en la placa de título, subtítulos, grabaciones de la app y placa final.
+- El video se grabó con el nombre anterior (AgroMatch COMEX) y se usa tal cual: debajo del reproductor, una nota aclara que antes de llamarse AgroGlobal la plataforma se llamaba AgroMatch COMEX. Si se reemplaza por un video con el nombre nuevo, quitar esa nota (está junto a `VIDEO_GUIA`).
 
 # Cambio de nombre: AgroMatch → AgroGlobal
 
