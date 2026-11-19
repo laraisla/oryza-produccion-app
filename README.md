@@ -86,6 +86,28 @@ nunca se envían al navegador. Los tests `src/test/stellar-firma.test.ts` y
 `X-Forwarded-For` falsificados, IP desconocida, entorno de producción y la demo local
 legítima, con la red simulada.
 
+## Anclaje documental independiente — Etapa 1
+
+El servicio en `src/lib/stellar/anchor/` registra el SHA-256 de documentos y
+versiones de acuerdos mediante transacciones clásicas Testnet (MEMO_HASH y una
+ManageData `agroglobal:anchor:v1`), separado del escrow anterior. Incluye diario
+durable para un único proceso local, idempotencia y verificación independiente.
+La firma puede hacerla Stellar CLI con una identidad del almacén seguro del sistema
+operativo (`STELLAR_ANCHOR_SIGNER=stellar-cli`), sin que la clave entre al proceso.
+Su entrada de escritura es la CLI del operador `scripts/stellar-anchor-demo.ts`. El
+envío permanece deshabilitado por defecto y no hay endpoint web capaz de firmar.
+
+**Estado actual (19/11/2026):** primera evidencia real **confirmada** en Stellar
+Testnet: transacción
+[`0f1894b7…72f9147f`](https://stellar.expert/explorer/testnet/tx/0f1894b76f63fe2f0b7b0f42bb8eb8a323ace463cb85068eeb3e53eb72f9147f),
+ledger 5807357, cuenta técnica `GA2JCDRU5Q3TPN4VZOQ5WBFNVGXSHTL5ZXKFVNLDANOUCLK34DTD6YNX`,
+documento ficticio. Consulta y verificación de solo lectura en
+`/evidencia-stellar/documental`, disponible únicamente con el servidor de desarrollo
+local (configuración `dev-anclaje`). `/evidencia-stellar` conserva la demo histórica
+del escrow. Ver [operación](docs/STELLAR-ANCLAJE-OPERACION.md) y
+[primera transacción](docs/PRIMERA-TRANSACCION-TESTNET.md).
+No usar el almacenamiento en disco de la demo en despliegues serverless.
+
 ## Ejecutar localmente
 
 Requisitos: [Bun](https://bun.sh) ≥ 1.4 (gestor del proyecto; no usar npm ni versionar
@@ -113,7 +135,7 @@ Para la demo con firma: copiar `.env.local.example` a `.env.local` y completarlo
 
 ## Pruebas
 
-Pruebas de la app (37 pruebas en 7 archivos):
+Pruebas de la app y el servicio (167 pruebas en 20 archivos; red simulada, claves efímeras):
 
 ```sh
 bun run test
@@ -128,6 +150,19 @@ bun run test
 | `src/test/stellar-firma.test.ts` | 5 | Restricciones de la firma con cuentas de prueba |
 | `src/test/stellar-firma-endpoint.test.ts` | 7 | Endpoint de firma: Host y X-Forwarded-For falsificados, IP desconocida, producción y demo legítima |
 | `src/test/app-routing.test.tsx` | 1 | Ruteo de la página principal |
+| `src/test/comex.test.ts` | 23 | Costos, responsables, escenarios y entradas incompletas |
+| `src/test/reservas.test.ts` | 18 | Aceptación y reservas locales indivisibles |
+| `src/test/cotizacion-contexto.test.ts` | 8 | Contexto comercial, moneda y snapshots |
+| `src/test/calculadora-ui.test.tsx` | 2 | Generación desde la pantalla y precio faltante |
+| `src/test/cotizaciones-ui.test.tsx` | 3 | Aceptación desde la interfaz y errores de stock |
+| `src/test/anchor-digest.test.ts` | 16 | SHA-256 y serialización estricta |
+| `src/test/anchor-transaction.test.ts` | 8 | Firma, Testnet, operaciones permitidas y verificación |
+| `src/test/anchor-service.test.ts` | 17 | Diario durable, idempotencia, reinicios, errores y documentos de 4 MiB |
+| `src/test/anchor-transport.test.ts` | 5 | Horizon simulado, timeouts y envío deshabilitado |
+| `src/test/anchor-cli.test.ts` | 2 | CLI real con Bun y procesos separados, red simulada y cero envíos; modo `stellar-cli` falla cerrado |
+| `src/test/anchor-cli-signer.test.ts` | 13 | Firma externa con Stellar CLI: sobres alterados, errores, entorno saneado, sin secretos |
+| `src/test/anchor-consulta.test.ts` | 8 | Consulta web: acceso local, solo lectura, privacidad, original y copia alterada |
+| `src/test/anchor-consulta-endpoint.test.ts` | 7 | API de consulta: loopback, Host, mismo origen, tamaño y errores saneados |
 
 Verificación de tipos:
 

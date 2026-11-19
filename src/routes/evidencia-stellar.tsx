@@ -4,6 +4,7 @@ import { useAppStore } from "@/lib/store";
 import { pageHead } from "@/lib/seo";
 import { Card, PageHeader, StatusBadge } from "@/components/ui-kit";
 import { AvisoTestnet, EvidenciaAcuerdo } from "@/components/stellar/evidencia";
+import { PestanasEvidencia } from "@/components/stellar/pestanas-evidencia";
 import { useFirmaTestnet } from "@/components/stellar/compra-garantia";
 import { STELLAR, acortar, explorer, fmtActivo } from "@/lib/stellar/config";
 import { cn } from "@/lib/utils";
@@ -51,6 +52,7 @@ function EvidenciaStellar() {
           ) : null
         }
       />
+      <PestanasEvidencia activa="escrow" />
       <AvisoTestnet className="mb-6" />
 
       <Card className="am-entrada mb-6">

@@ -26,8 +26,10 @@ import { Route as OperacionesRouteImport } from './routes/operaciones'
 import { Route as RegistroEmpresaRouteImport } from './routes/registro-empresa'
 import { Route as SolicitudesRouteImport } from './routes/solicitudes'
 import { Route as TrazabilidadRouteImport } from './routes/trazabilidad'
+import { Route as EvidenciaStellarDocumentalRouteImport } from './routes/evidencia-stellar_.documental'
 import { Route as ApiPublicMarcaDetectarRouteImport } from './routes/api/public/marca/detectar'
 import { Route as ApiPublicStellarAcuerdosRouteImport } from './routes/api/public/stellar/acuerdos'
+import { Route as ApiPublicStellarAnclajeRouteImport } from './routes/api/public/stellar/anclaje'
 import { Route as ApiPublicWhatsappWebhookRouteImport } from './routes/api/public/whatsapp/webhook'
 
 const IndexRoute = IndexRouteImport.update({
@@ -115,6 +117,12 @@ const TrazabilidadRoute = TrazabilidadRouteImport.update({
   path: '/trazabilidad',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EvidenciaStellarDocumentalRoute =
+  EvidenciaStellarDocumentalRouteImport.update({
+    id: '/evidencia-stellar_/documental',
+    path: '/evidencia-stellar/documental',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicMarcaDetectarRoute = ApiPublicMarcaDetectarRouteImport.update({
   id: '/api/public/marca/detectar',
   path: '/api/public/marca/detectar',
@@ -126,6 +134,11 @@ const ApiPublicStellarAcuerdosRoute =
     path: '/api/public/stellar/acuerdos',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicStellarAnclajeRoute = ApiPublicStellarAnclajeRouteImport.update({
+  id: '/api/public/stellar/anclaje',
+  path: '/api/public/stellar/anclaje',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicWhatsappWebhookRoute =
   ApiPublicWhatsappWebhookRouteImport.update({
     id: '/api/public/whatsapp/webhook',
@@ -151,8 +164,10 @@ export interface FileRoutesByFullPath {
   '/registro-empresa': typeof RegistroEmpresaRoute
   '/solicitudes': typeof SolicitudesRoute
   '/trazabilidad': typeof TrazabilidadRoute
+  '/evidencia-stellar/documental': typeof EvidenciaStellarDocumentalRoute
   '/api/public/marca/detectar': typeof ApiPublicMarcaDetectarRoute
   '/api/public/stellar/acuerdos': typeof ApiPublicStellarAcuerdosRoute
+  '/api/public/stellar/anclaje': typeof ApiPublicStellarAnclajeRoute
   '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
 }
 export interface FileRoutesByTo {
@@ -173,8 +188,10 @@ export interface FileRoutesByTo {
   '/registro-empresa': typeof RegistroEmpresaRoute
   '/solicitudes': typeof SolicitudesRoute
   '/trazabilidad': typeof TrazabilidadRoute
+  '/evidencia-stellar/documental': typeof EvidenciaStellarDocumentalRoute
   '/api/public/marca/detectar': typeof ApiPublicMarcaDetectarRoute
   '/api/public/stellar/acuerdos': typeof ApiPublicStellarAcuerdosRoute
+  '/api/public/stellar/anclaje': typeof ApiPublicStellarAnclajeRoute
   '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
 }
 export interface FileRoutesById {
@@ -196,8 +213,10 @@ export interface FileRoutesById {
   '/registro-empresa': typeof RegistroEmpresaRoute
   '/solicitudes': typeof SolicitudesRoute
   '/trazabilidad': typeof TrazabilidadRoute
+  '/evidencia-stellar_/documental': typeof EvidenciaStellarDocumentalRoute
   '/api/public/marca/detectar': typeof ApiPublicMarcaDetectarRoute
   '/api/public/stellar/acuerdos': typeof ApiPublicStellarAcuerdosRoute
+  '/api/public/stellar/anclaje': typeof ApiPublicStellarAnclajeRoute
   '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
 }
 export interface FileRouteTypes {
@@ -220,8 +239,10 @@ export interface FileRouteTypes {
     | '/registro-empresa'
     | '/solicitudes'
     | '/trazabilidad'
+    | '/evidencia-stellar/documental'
     | '/api/public/marca/detectar'
     | '/api/public/stellar/acuerdos'
+    | '/api/public/stellar/anclaje'
     | '/api/public/whatsapp/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -242,8 +263,10 @@ export interface FileRouteTypes {
     | '/registro-empresa'
     | '/solicitudes'
     | '/trazabilidad'
+    | '/evidencia-stellar/documental'
     | '/api/public/marca/detectar'
     | '/api/public/stellar/acuerdos'
+    | '/api/public/stellar/anclaje'
     | '/api/public/whatsapp/webhook'
   id:
     | '__root__'
@@ -264,8 +287,10 @@ export interface FileRouteTypes {
     | '/registro-empresa'
     | '/solicitudes'
     | '/trazabilidad'
+    | '/evidencia-stellar_/documental'
     | '/api/public/marca/detectar'
     | '/api/public/stellar/acuerdos'
+    | '/api/public/stellar/anclaje'
     | '/api/public/whatsapp/webhook'
   fileRoutesById: FileRoutesById
 }
@@ -287,8 +312,10 @@ export interface RootRouteChildren {
   RegistroEmpresaRoute: typeof RegistroEmpresaRoute
   SolicitudesRoute: typeof SolicitudesRoute
   TrazabilidadRoute: typeof TrazabilidadRoute
+  EvidenciaStellarDocumentalRoute: typeof EvidenciaStellarDocumentalRoute
   ApiPublicMarcaDetectarRoute: typeof ApiPublicMarcaDetectarRoute
   ApiPublicStellarAcuerdosRoute: typeof ApiPublicStellarAcuerdosRoute
+  ApiPublicStellarAnclajeRoute: typeof ApiPublicStellarAnclajeRoute
   ApiPublicWhatsappWebhookRoute: typeof ApiPublicWhatsappWebhookRoute
 }
 
@@ -413,6 +440,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrazabilidadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/evidencia-stellar_/documental': {
+      id: '/evidencia-stellar_/documental'
+      path: '/evidencia-stellar/documental'
+      fullPath: '/evidencia-stellar/documental'
+      preLoaderRoute: typeof EvidenciaStellarDocumentalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/marca/detectar': {
       id: '/api/public/marca/detectar'
       path: '/api/public/marca/detectar'
@@ -425,6 +459,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/stellar/acuerdos'
       fullPath: '/api/public/stellar/acuerdos'
       preLoaderRoute: typeof ApiPublicStellarAcuerdosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/stellar/anclaje': {
+      id: '/api/public/stellar/anclaje'
+      path: '/api/public/stellar/anclaje'
+      fullPath: '/api/public/stellar/anclaje'
+      preLoaderRoute: typeof ApiPublicStellarAnclajeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/whatsapp/webhook': {
@@ -455,8 +496,10 @@ const rootRouteChildren: RootRouteChildren = {
   RegistroEmpresaRoute: RegistroEmpresaRoute,
   SolicitudesRoute: SolicitudesRoute,
   TrazabilidadRoute: TrazabilidadRoute,
+  EvidenciaStellarDocumentalRoute: EvidenciaStellarDocumentalRoute,
   ApiPublicMarcaDetectarRoute: ApiPublicMarcaDetectarRoute,
   ApiPublicStellarAcuerdosRoute: ApiPublicStellarAcuerdosRoute,
+  ApiPublicStellarAnclajeRoute: ApiPublicStellarAnclajeRoute,
   ApiPublicWhatsappWebhookRoute: ApiPublicWhatsappWebhookRoute,
 }
 export const routeTree = rootRouteImport

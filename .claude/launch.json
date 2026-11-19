@@ -2,6 +2,16 @@
   "version": "0.0.1",
   "configurations": [
     { "name": "dev", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 8080 },
-    { "name": "prod", "runtimeExecutable": "node", "runtimeArgs": [".output/server/index.mjs"], "port": 3000 }
+    { "name": "prod", "runtimeExecutable": "node", "runtimeArgs": [".output/server/index.mjs"], "port": 3000 },
+    {
+      "name": "dev-anclaje",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": [
+        "-NoProfile",
+        "-Command",
+        "Remove-Item Env:\\STELLAR_ANCHOR_SECRET -ErrorAction SilentlyContinue; $env:STELLAR_ANCHOR_ENABLED='0'; $env:STELLAR_ANCHOR_DEMO='1'; $env:STELLAR_ANCHOR_PUBLIC_KEY='GA2JCDRU5Q3TPN4VZOQ5WBFNVGXSHTL5ZXKFVNLDANOUCLK34DTD6YNX'; $env:STELLAR_ANCHOR_EPOCH='testnet-primera-prueba-20261119'; $env:STELLAR_ANCHOR_DIRECTORY=(Join-Path (Get-Location) 'anchor-demo.local'); npm run dev"
+      ],
+      "port": 8080
+    }
   ]
 }

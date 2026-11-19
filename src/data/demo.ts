@@ -3,12 +3,26 @@
 // Ninguna empresa, cifra ni registro corresponde a datos reales.
 // ============================================================
 
+import type { ConceptoCosto, ParametrosSimulacion } from "@/lib/comex";
+
 export type Rol = "productor" | "comprador" | "exportador";
 
 export const ROLES: { id: Rol; label: string; descripcion: string }[] = [
-  { id: "productor", label: "Productor / Molino", descripcion: "Ofrece lotes y gestiona su producción" },
-  { id: "comprador", label: "Comprador / Importador", descripcion: "Busca producto y solicita cotizaciones" },
-  { id: "exportador", label: "Exportador / Admin COMEX", descripcion: "Gestiona operaciones de exportación" },
+  {
+    id: "productor",
+    label: "Productor / Molino",
+    descripcion: "Ofrece lotes y gestiona su producción",
+  },
+  {
+    id: "comprador",
+    label: "Comprador / Importador",
+    descripcion: "Busca producto y solicita cotizaciones",
+  },
+  {
+    id: "exportador",
+    label: "Exportador / Admin COMEX",
+    descripcion: "Gestiona operaciones de exportación",
+  },
 ];
 
 export interface Producto {
@@ -75,6 +89,17 @@ export interface Cotizacion {
   validezDias: number;
   estado: EstadoCotizacion;
   margenPct: number;
+  /** Precio en la moneda de la propuesta; precioTnUsd conserva la base USD. */
+  precioTn?: number;
+  provinciaOrigen?: string;
+  paisOrigen?: string;
+  puertoSalida?: string;
+  puertoDestino?: string;
+  fechaEmbarque?: string;
+  tipoCambioArs?: number;
+  costosComex?: ConceptoCosto[];
+  parametrosComex?: ParametrosSimulacion;
+  pendientesVerificacion?: string[];
   /** Recorrido comercial: solicitud de origen, lotes (1 o 2) con su tonelaje y operación creada al aceptar. */
   solicitudId?: string;
   lotes?: { loteId: string; tn: number }[];
@@ -89,6 +114,11 @@ export interface Operacion {
   cantidadContratadaTn: number;
   cantidadEmbarcadaTn: number;
   precioPactadoTnUsd: number;
+  precioPactadoTn?: number;
+  moneda?: string;
+  paisOrigen?: string;
+  provinciaOrigen?: string;
+  paisDestino?: string;
   valorFacturadoUsd: number;
   incoterm: string;
   fechaProgramada: string;
@@ -279,7 +309,8 @@ export const COTIZACIONES_INICIALES: Cotizacion[] = [
     presentacion: "Bolsas de 25 kg",
     fecha: "2026-10-10",
     moneda: "USD",
-    condiciones: "Pago: carta de crédito a la vista. Embarque estimado: 30 días desde la aceptación.",
+    condiciones:
+      "Pago: carta de crédito a la vista. Embarque estimado: 30 días desde la aceptación.",
     validezDias: 15,
     estado: "Enviada",
     margenPct: 12,
@@ -345,7 +376,10 @@ export const OPERACIONES_INICIALES: Operacion[] = [
   },
 ];
 
-export const DOCUMENTOS_POR_CATEGORIA: { categoria: string; documentos: Omit<DocumentoRequerido, "categoria">[] }[] = [
+export const DOCUMENTOS_POR_CATEGORIA: {
+  categoria: string;
+  documentos: Omit<DocumentoRequerido, "categoria">[];
+}[] = [
   {
     categoria: "A. Documentación comercial",
     documentos: [
@@ -468,7 +502,8 @@ export const DOCUMENTOS_POR_CATEGORIA: { categoria: string; documentos: Omit<Doc
       {
         id: "DOC-11",
         nombre: "Seguimiento SECOEXPO",
-        descripcion: "Seguimiento del estado documental y bancario de la exportación (demostrativo).",
+        descripcion:
+          "Seguimiento del estado documental y bancario de la exportación (demostrativo).",
         responsable: "Exportador",
         estado: "Pendiente",
         fuente: "Demo — sin conexión con BCRA ni bancos",
@@ -503,7 +538,8 @@ export const CONCILIACIONES_INICIALES: Conciliacion[] = [
     cobroNetoUsd: 0,
     anticiposUsd: 0,
     estado: "Próxima a revisar",
-    observacion: "Operación aún sin facturación. Se activará el seguimiento al emitirse la factura comercial.",
+    observacion:
+      "Operación aún sin facturación. Se activará el seguimiento al emitirse la factura comercial.",
   },
 ];
 
@@ -520,7 +556,13 @@ export const HITOS_OPERACION = [
 // El gráfico de oportunidades ficticio fue reemplazado por exportaciones reales
 // (ver src/data/mercados.ts y src/routes/inteligencia-mercados.tsx).
 
-export const PUERTOS_ARGENTINA = ["Buenos Aires", "Rosario", "Bahía Blanca", "Zárate", "Concepción del Uruguay"];
+export const PUERTOS_ARGENTINA = [
+  "Buenos Aires",
+  "Rosario",
+  "Bahía Blanca",
+  "Zárate",
+  "Concepción del Uruguay",
+];
 export const PUERTOS_DESTINO: Record<string, string[]> = {
   "República Dominicana": ["Caucedo", "Haina"],
   Chile: ["San Antonio", "Valparaíso"],
@@ -529,11 +571,35 @@ export const PUERTOS_DESTINO: Record<string, string[]> = {
   México: ["Veracruz", "Manzanillo"],
   Colombia: ["Buenaventura", "Cartagena"],
 };
-export const INCOTERMS = ["EXW", "FCA", "FAS", "FOB", "CFR", "CIF", "CPT", "CIP", "DAP", "DPU", "DDP"];
-export const PROVINCIAS = ["Chaco", "Corrientes", "Entre Ríos", "Santa Fe", "Formosa", "Buenos Aires"];
+export const INCOTERMS = [
+  "EXW",
+  "FCA",
+  "FAS",
+  "FOB",
+  "CFR",
+  "CIF",
+  "CPT",
+  "CIP",
+  "DAP",
+  "DPU",
+  "DDP",
+];
+export const PROVINCIAS = [
+  "Chaco",
+  "Corrientes",
+  "Entre Ríos",
+  "Santa Fe",
+  "Formosa",
+  "Buenos Aires",
+];
 
 export function fmtUsd(n: number, dec = 0): string {
-  return n.toLocaleString("es-AR", { style: "currency", currency: "USD", maximumFractionDigits: dec, minimumFractionDigits: dec });
+  return n.toLocaleString("es-AR", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: dec,
+    minimumFractionDigits: dec,
+  });
 }
 
 export function fmtTn(n: number): string {

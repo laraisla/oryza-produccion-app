@@ -1,15 +1,34 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { CheckCircle2, CircleAlert, CircleX, FileOutput, Lightbulb, Scale, Sparkles } from "lucide-react";
+import {
+  CheckCircle2,
+  CircleAlert,
+  CircleX,
+  FileOutput,
+  Lightbulb,
+  Scale,
+  Sparkles,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { INCOTERMS, fmtTn, type SolicitudCompra } from "@/data/demo";
-import { analizarCompatibilidad, rankearResultados, type AnalisisMatch, type ResultadoMatch } from "@/lib/matching";
+import {
+  analizarCompatibilidad,
+  rankearResultados,
+  type AnalisisMatch,
+  type ResultadoMatch,
+} from "@/lib/matching";
 import { useAppStore } from "@/lib/store";
 import { asignarLotes, construirCotizacion, siguienteId } from "@/lib/recorrido";
 import { pageHead } from "@/lib/seo";
 import { Card, DemoBadge, IconoVacio, PageHeader } from "@/components/ui-kit";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { escalonado, retraso, useSeccionAnimada } from "@/lib/animacion";
 
@@ -28,15 +47,66 @@ export const Route = createFileRoute("/matching")({
 const inp = "h-9 w-full rounded-md border border-input bg-background px-2.5 text-sm";
 
 const ESCENARIOS: Record<string, Partial<SolicitudCompra>> = {
-  recorrido: { comprador: "Importadora Caribe Demo S.A. (ficticia)", paisDestino: "República Dominicana", tipoArroz: "Blanco", variedad: "Largo fino", volumenTn: 50, quebradoMaxPct: 5, humedadMaxPct: 14, presentacion: "Bolsas de 25 kg", incoterm: "CFR", certificaciones: [] },
-  jazmin: { comprador: "Alimentos Andinos SpA (ficticia)", paisDestino: "Chile", tipoArroz: "Aromático", variedad: "Jazmín", volumenTn: 20, quebradoMaxPct: 5, humedadMaxPct: 14, presentacion: "Envases de 1 kg", incoterm: "CIF", certificaciones: [] },
-  largoFino: { comprador: "Distribuidora Caribe Ltda. (ficticia)", paisDestino: "República Dominicana", tipoArroz: "Blanco", variedad: "Largo fino", volumenTn: 40, quebradoMaxPct: 5, humedadMaxPct: 14, presentacion: "Bolsas de 25 kg", incoterm: "FOB", certificaciones: [] },
+  recorrido: {
+    comprador: "Importadora Caribe Demo S.A. (ficticia)",
+    paisDestino: "República Dominicana",
+    tipoArroz: "Blanco",
+    variedad: "Largo fino",
+    volumenTn: 50,
+    quebradoMaxPct: 5,
+    humedadMaxPct: 14,
+    presentacion: "Bolsas de 25 kg",
+    incoterm: "CFR",
+    certificaciones: [],
+  },
+  jazmin: {
+    comprador: "Alimentos Andinos SpA (ficticia)",
+    paisDestino: "Chile",
+    tipoArroz: "Aromático",
+    variedad: "Jazmín",
+    volumenTn: 20,
+    quebradoMaxPct: 5,
+    humedadMaxPct: 14,
+    presentacion: "Envases de 1 kg",
+    incoterm: "CIF",
+    certificaciones: [],
+  },
+  largoFino: {
+    comprador: "Distribuidora Caribe Ltda. (ficticia)",
+    paisDestino: "República Dominicana",
+    tipoArroz: "Blanco",
+    variedad: "Largo fino",
+    volumenTn: 40,
+    quebradoMaxPct: 5,
+    humedadMaxPct: 14,
+    presentacion: "Bolsas de 25 kg",
+    incoterm: "FOB",
+    certificaciones: [],
+  },
 };
 
-const META: Record<ResultadoMatch, { label: string; icon: typeof CheckCircle2; card: string; chip: string }> = {
-  compatible: { label: "Compatible", icon: CheckCircle2, card: "border-success/50 ring-1 ring-success/20", chip: "bg-success text-success-foreground" },
-  condicional: { label: "Compatible con condiciones", icon: CircleAlert, card: "border-warning/50", chip: "bg-warning text-warning-foreground" },
-  incompatible: { label: "Incompatible", icon: CircleX, card: "border-destructive/30 opacity-90", chip: "bg-destructive text-destructive-foreground" },
+const META: Record<
+  ResultadoMatch,
+  { label: string; icon: typeof CheckCircle2; card: string; chip: string }
+> = {
+  compatible: {
+    label: "Compatible",
+    icon: CheckCircle2,
+    card: "border-success/50 ring-1 ring-success/20",
+    chip: "bg-success text-success-foreground",
+  },
+  condicional: {
+    label: "Compatible con condiciones",
+    icon: CircleAlert,
+    card: "border-warning/50",
+    chip: "bg-warning text-warning-foreground",
+  },
+  incompatible: {
+    label: "Incompatible",
+    icon: CircleX,
+    card: "border-destructive/30 opacity-90",
+    chip: "bg-destructive text-destructive-foreground",
+  },
 };
 
 function Matching() {
@@ -45,9 +115,21 @@ function Matching() {
   const { solicitud: solicitudId } = Route.useSearch();
 
   const [form, setForm] = useState<SolicitudCompra>({
-    id: "", comprador: "Importadora Caribe Demo S.A. (ficticia)", paisDestino: "República Dominicana", producto: "Arroz",
-    tipoArroz: "Blanco", variedad: "Largo fino", volumenTn: 50, quebradoMaxPct: 5, humedadMaxPct: 14,
-    presentacion: "Bolsas de 25 kg", incoterm: "CFR", fechaRequerida: "2026-11-30", certificaciones: [], estado: "Activa", observaciones: "",
+    id: "",
+    comprador: "Importadora Caribe Demo S.A. (ficticia)",
+    paisDestino: "República Dominicana",
+    producto: "Arroz",
+    tipoArroz: "Blanco",
+    variedad: "Largo fino",
+    volumenTn: 50,
+    quebradoMaxPct: 5,
+    humedadMaxPct: 14,
+    presentacion: "Bolsas de 25 kg",
+    incoterm: "CFR",
+    fechaRequerida: "2026-11-30",
+    certificaciones: [],
+    estado: "Activa",
+    observaciones: "",
   });
   const [resultados, setResultados] = useState<AnalisisMatch[] | null>(null);
   const [comparar, setComparar] = useState<AnalisisMatch | null>(null);
@@ -66,13 +148,27 @@ function Matching() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [solicitudId]);
 
-  const set = <K extends keyof SolicitudCompra>(k: K, v: SolicitudCompra[K]) => setForm((f) => ({ ...f, [k]: v }));
+  const set = <K extends keyof SolicitudCompra>(k: K, v: SolicitudCompra[K]) =>
+    setForm((f) => ({ ...f, [k]: v }));
   const toggleCert = (c: string) =>
-    set("certificaciones", form.certificaciones.includes(c) ? form.certificaciones.filter((x) => x !== c) : [...form.certificaciones, c]);
+    set(
+      "certificaciones",
+      form.certificaciones.includes(c)
+        ? form.certificaciones.filter((x) => x !== c)
+        : [...form.certificaciones, c],
+    );
 
   const buscar = (e?: React.FormEvent) => {
     e?.preventDefault();
-    const sol = { ...form, id: form.id || siguienteId("SOL-", state.solicitudes.map((x) => x.id)) };
+    const sol = {
+      ...form,
+      id:
+        form.id ||
+        siguienteId(
+          "SOL-",
+          state.solicitudes.map((x) => x.id),
+        ),
+    };
     if (!form.id) {
       dispatch({ type: "addSolicitud", solicitud: sol });
       setForm(sol);
@@ -100,25 +196,44 @@ function Matching() {
     const cond = resultados.filter((r) => r.resultado === "condicional");
     const inc = resultados.filter((r) => r.resultado === "incompatible");
     let txt = `Para la solicitud de ${fmtTn(form.volumenTn)} de arroz ${form.tipoArroz.toLowerCase()} ${form.variedad.toLowerCase()} con destino ${form.paisDestino}: `;
-    if (c.length) txt += `${c.length} lote(s) cumplen todos los requisitos (${c.map((x) => x.producto.id).join(", ")}). Recomendación: solicitar cotización a ${c[0]?.producto.empresa ?? "el oferente"}. `;
+    if (c.length)
+      txt += `${c.length} lote(s) cumplen todos los requisitos (${c.map((x) => x.producto.id).join(", ")}). Recomendación: solicitar cotización a ${c[0]?.producto.empresa ?? "el oferente"}. `;
     else txt += "ningún lote cumple todos los requisitos. ";
-    if (cond.length) txt += `${cond.length} lote(s) podrían negociarse: ${cond.map((x) => `${x.producto.id} (${x.diferencias[0] ?? "diferencias negociables"})`).join("; ")}. `;
-    if (inc.length) txt += `${inc.length} lote(s) se descartan por incumplir requisitos obligatorios, principalmente: ${(inc[0]?.incumplimientos[0] ?? "requisitos obligatorios").toLowerCase()}.`;
+    if (cond.length)
+      txt += `${cond.length} lote(s) podrían negociarse: ${cond.map((x) => `${x.producto.id} (${x.diferencias[0] ?? "diferencias negociables"})`).join("; ")}. `;
+    if (inc.length)
+      txt += `${inc.length} lote(s) se descartan por incumplir requisitos obligatorios, principalmente: ${(inc[0]?.incumplimientos[0] ?? "requisitos obligatorios").toLowerCase()}.`;
     setAnalisis(txt);
   };
 
   const toggleLote = (id: string) =>
-    setElegidos((e) => (e.includes(id) ? e.filter((x) => x !== id) : e.length >= 2 ? [e[1]!, id] : [...e, id]));
-  const productosElegidos = elegidos.map((id) => state.productos.find((p) => p.id === id)).filter((p): p is NonNullable<typeof p> => !!p);
-  const asignacion = form.id && productosElegidos.length ? asignarLotes(form, productosElegidos) : null;
+    setElegidos((e) =>
+      e.includes(id) ? e.filter((x) => x !== id) : e.length >= 2 ? [e[1]!, id] : [...e, id],
+    );
+  const productosElegidos = elegidos
+    .map((id) => state.productos.find((p) => p.id === id))
+    .filter((p): p is NonNullable<typeof p> => !!p);
+  const asignacion =
+    form.id && productosElegidos.length ? asignarLotes(form, productosElegidos) : null;
 
   const generarCotizacion = () => {
     if (!asignacion || !asignacion.cubreVolumen) return;
-    const cot = construirCotizacion(form, asignacion, state.productos, state.cotizaciones.map((c) => c.id));
-    dispatch({ type: "addCotizacion", cotizacion: cot });
-    dispatch({ type: "updateSolicitud", id: form.id, patch: { estado: "En negociación" } });
-    toast.success(`Cotización ${cot.id} generada desde ${form.id}`);
-    navigate({ to: "/cotizaciones", search: { ver: cot.id } });
+    try {
+      const cot = construirCotizacion(
+        form,
+        asignacion,
+        state.productos,
+        state.cotizaciones.map((c) => c.id),
+      );
+      dispatch({ type: "addCotizacion", cotizacion: cot });
+      dispatch({ type: "updateSolicitud", id: form.id, patch: { estado: "En negociación" } });
+      toast.success(`Cotización ${cot.id} generada desde ${form.id}`);
+      navigate({ to: "/cotizaciones", search: { ver: cot.id } });
+    } catch (e) {
+      toast.error("No se generó la cotización", {
+        description: e instanceof Error ? e.message : String(e),
+      });
+    }
   };
 
   return (
@@ -132,124 +247,361 @@ function Matching() {
       <Card className="mb-6 flex flex-wrap items-center gap-3 bg-info-muted/60">
         <Lightbulb className="h-4 w-4 text-info" />
         <span className="text-sm font-medium">Escenarios de demostración:</span>
-        <Button size="sm" variant="outline" onClick={() => cargarEscenario("recorrido")}>Recorrido · 50 tn largo fino ≤5%, 25 kg, CFR</Button>
-        <Button size="sm" variant="outline" onClick={() => cargarEscenario("jazmin")}>1 · Comprador busca arroz jazmín</Button>
-        <Button size="sm" variant="outline" onClick={() => cargarEscenario("largoFino")}>2 · 40 tn largo fino ≤5% quebrado, 25 kg</Button>
+        <Button size="sm" variant="outline" onClick={() => cargarEscenario("recorrido")}>
+          Recorrido · 50 tn largo fino ≤5%, 25 kg, CFR
+        </Button>
+        <Button size="sm" variant="outline" onClick={() => cargarEscenario("jazmin")}>
+          1 · Comprador busca arroz jazmín
+        </Button>
+        <Button size="sm" variant="outline" onClick={() => cargarEscenario("largoFino")}>
+          2 · 40 tn largo fino ≤5% quebrado, 25 kg
+        </Button>
       </Card>
 
       <div className="grid gap-6 xl:grid-cols-[400px_1fr]">
         <Card className="h-fit">
-          <h2 className="mb-4 text-base font-semibold">Solicitud de compra {form.id && <span className="font-mono text-xs text-muted-foreground">· {form.id}</span>}</h2>
+          <h2 className="mb-4 text-base font-semibold">
+            Solicitud de compra{" "}
+            {form.id && (
+              <span className="font-mono text-xs text-muted-foreground">· {form.id}</span>
+            )}
+          </h2>
           <form onSubmit={buscar} className="grid grid-cols-2 gap-3">
-            <L t="Comprador" full><input className={inp} value={form.comprador} onChange={(e) => set("comprador", e.target.value)} /></L>
-            <L t="Producto"><select className={inp} value={form.producto} onChange={(e) => set("producto", e.target.value)}><option>Arroz</option></select></L>
-            <L t="Tipo de arroz"><select className={inp} value={form.tipoArroz} onChange={(e) => set("tipoArroz", e.target.value)}><option>Blanco</option><option>Integral</option><option>Aromático</option><option>Parboil</option></select></L>
-            <L t="Variedad requerida"><select className={inp} value={form.variedad} onChange={(e) => set("variedad", e.target.value)}><option>Largo fino</option><option>Largo ancho</option><option>Jazmín</option><option>Doble carolina</option></select></L>
-            <L t="Volumen (tn)"><input type="number" min={1} className={inp} value={form.volumenTn} onChange={(e) => set("volumenTn", +e.target.value)} /></L>
-            <L t="Quebrado máx. (%)"><input type="number" step={0.5} className={inp} value={form.quebradoMaxPct} onChange={(e) => set("quebradoMaxPct", +e.target.value)} /></L>
-            <L t="Humedad máx. (%)"><input type="number" step={0.5} className={inp} value={form.humedadMaxPct} onChange={(e) => set("humedadMaxPct", +e.target.value)} /></L>
-            <L t="Presentación"><select className={inp} value={form.presentacion} onChange={(e) => set("presentacion", e.target.value)}><option>Bolsas de 25 kg</option><option>Bolsas de 50 kg</option><option>Envases de 1 kg</option><option>Big bags de 1.000 kg</option><option>A granel</option></select></L>
-            <L t="País de destino"><input className={inp} value={form.paisDestino} onChange={(e) => set("paisDestino", e.target.value)} /></L>
-            <L t="Fecha requerida"><input type="date" className={inp} value={form.fechaRequerida} onChange={(e) => set("fechaRequerida", e.target.value)} /></L>
-            <L t="Incoterm preferido"><select className={inp} value={form.incoterm} onChange={(e) => set("incoterm", e.target.value)}>{INCOTERMS.map((i) => <option key={i}>{i}</option>)}</select></L>
+            <L t="Comprador" full>
+              <input
+                className={inp}
+                value={form.comprador}
+                onChange={(e) => set("comprador", e.target.value)}
+              />
+            </L>
+            <L t="Producto">
+              <select
+                className={inp}
+                value={form.producto}
+                onChange={(e) => set("producto", e.target.value)}
+              >
+                <option>Arroz</option>
+              </select>
+            </L>
+            <L t="Tipo de arroz">
+              <select
+                className={inp}
+                value={form.tipoArroz}
+                onChange={(e) => set("tipoArroz", e.target.value)}
+              >
+                <option>Blanco</option>
+                <option>Integral</option>
+                <option>Aromático</option>
+                <option>Parboil</option>
+              </select>
+            </L>
+            <L t="Variedad requerida">
+              <select
+                className={inp}
+                value={form.variedad}
+                onChange={(e) => set("variedad", e.target.value)}
+              >
+                <option>Largo fino</option>
+                <option>Largo ancho</option>
+                <option>Jazmín</option>
+                <option>Doble carolina</option>
+              </select>
+            </L>
+            <L t="Volumen (tn)">
+              <input
+                type="number"
+                min={1}
+                className={inp}
+                value={form.volumenTn}
+                onChange={(e) => set("volumenTn", +e.target.value)}
+              />
+            </L>
+            <L t="Quebrado máx. (%)">
+              <input
+                type="number"
+                step={0.5}
+                className={inp}
+                value={form.quebradoMaxPct}
+                onChange={(e) => set("quebradoMaxPct", +e.target.value)}
+              />
+            </L>
+            <L t="Humedad máx. (%)">
+              <input
+                type="number"
+                step={0.5}
+                className={inp}
+                value={form.humedadMaxPct}
+                onChange={(e) => set("humedadMaxPct", +e.target.value)}
+              />
+            </L>
+            <L t="Presentación">
+              <select
+                className={inp}
+                value={form.presentacion}
+                onChange={(e) => set("presentacion", e.target.value)}
+              >
+                <option>Bolsas de 25 kg</option>
+                <option>Bolsas de 50 kg</option>
+                <option>Envases de 1 kg</option>
+                <option>Big bags de 1.000 kg</option>
+                <option>A granel</option>
+              </select>
+            </L>
+            <L t="País de destino">
+              <input
+                className={inp}
+                value={form.paisDestino}
+                onChange={(e) => set("paisDestino", e.target.value)}
+              />
+            </L>
+            <L t="Fecha requerida">
+              <input
+                type="date"
+                className={inp}
+                value={form.fechaRequerida}
+                onChange={(e) => set("fechaRequerida", e.target.value)}
+              />
+            </L>
+            <L t="Incoterm preferido">
+              <select
+                className={inp}
+                value={form.incoterm}
+                onChange={(e) => set("incoterm", e.target.value)}
+              >
+                {INCOTERMS.map((i) => (
+                  <option key={i}>{i}</option>
+                ))}
+              </select>
+            </L>
             <L t="Certificaciones solicitadas" full>
               <div className="flex flex-wrap gap-2">
-                {["Certificado fitosanitario", "Análisis de calidad", "Certificado de origen", "Kosher"].map((c) => (
-                  <button type="button" key={c} onClick={() => toggleCert(c)} className={cn("rounded-full border px-2.5 py-1 text-xs", form.certificaciones.includes(c) ? "border-primary bg-primary text-primary-foreground" : "border-border hover:bg-accent")}>{c}</button>
+                {[
+                  "Certificado fitosanitario",
+                  "Análisis de calidad",
+                  "Certificado de origen",
+                  "Kosher",
+                ].map((c) => (
+                  <button
+                    type="button"
+                    key={c}
+                    onClick={() => toggleCert(c)}
+                    className={cn(
+                      "rounded-full border px-2.5 py-1 text-xs",
+                      form.certificaciones.includes(c)
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border hover:bg-accent",
+                    )}
+                  >
+                    {c}
+                  </button>
                 ))}
               </div>
             </L>
-            <L t="Observaciones" full><textarea rows={2} className="w-full rounded-md border border-input bg-background px-2.5 py-2 text-sm" value={form.observaciones} onChange={(e) => set("observaciones", e.target.value)} /></L>
-            <Button type="submit" size="lg" className="col-span-2 mt-1"><Sparkles className="h-4 w-4" />Buscar coincidencias</Button>
+            <L t="Observaciones" full>
+              <textarea
+                rows={2}
+                className="w-full rounded-md border border-input bg-background px-2.5 py-2 text-sm"
+                value={form.observaciones}
+                onChange={(e) => set("observaciones", e.target.value)}
+              />
+            </L>
+            <Button type="submit" size="lg" className="col-span-2 mt-1">
+              <Sparkles className="h-4 w-4" />
+              Buscar coincidencias
+            </Button>
           </form>
         </Card>
 
         <div>
           {!resultados ? (
             <Card className="flex h-full min-h-80 flex-col items-center justify-center text-center">
-              <IconoVacio><Sparkles strokeWidth={1.75} /></IconoVacio>
-              <p className="mt-3 text-sm font-medium">Completá la solicitud y presioná “Buscar coincidencias”</p>
-              <p className="mt-1 max-w-sm text-xs text-muted-foreground">El motor evaluará variedad, tipo, calidad, volumen, presentación y certificaciones contra {state.productos.length} lotes.</p>
+              <IconoVacio>
+                <Sparkles strokeWidth={1.75} />
+              </IconoVacio>
+              <p className="mt-3 text-sm font-medium">
+                Completá la solicitud y presioná “Buscar coincidencias”
+              </p>
+              <p className="mt-1 max-w-sm text-xs text-muted-foreground">
+                El motor evaluará variedad, tipo, calidad, volumen, presentación y certificaciones
+                contra {state.productos.length} lotes.
+              </p>
             </Card>
           ) : (
             <>
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex gap-2 text-xs">
-                  {(["compatible", "condicional", "incompatible"] as ResultadoMatch[]).map((r, i) => (
-                    <span key={r} style={escalonado(i, 0, 80)} className={cn("am-entrada rounded-full px-2.5 py-1 font-semibold", META[r].chip)}>
-                      {resultados.filter((x) => x.resultado === r).length} {META[r].label.toLowerCase()}
-                    </span>
-                  ))}
+                  {(["compatible", "condicional", "incompatible"] as ResultadoMatch[]).map(
+                    (r, i) => (
+                      <span
+                        key={r}
+                        style={escalonado(i, 0, 80)}
+                        className={cn(
+                          "am-entrada rounded-full px-2.5 py-1 font-semibold",
+                          META[r].chip,
+                        )}
+                      >
+                        {resultados.filter((x) => x.resultado === r).length}{" "}
+                        {META[r].label.toLowerCase()}
+                      </span>
+                    ),
+                  )}
                 </div>
-                <Button variant="outline" onClick={analizarOportunidad}><Lightbulb className="h-4 w-4" />Analizar oportunidad</Button>
+                <Button variant="outline" onClick={analizarOportunidad}>
+                  <Lightbulb className="h-4 w-4" />
+                  Analizar oportunidad
+                </Button>
               </div>
               {analisis && (
                 <Card className="am-entrada mb-4 border-info/30 bg-info-muted/50">
-                  <p className="mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-info"><Lightbulb className="h-3.5 w-3.5" />Análisis de oportunidad (reglas demo, sin IA real)</p>
+                  <p className="mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-info">
+                    <Lightbulb className="h-3.5 w-3.5" />
+                    Análisis de oportunidad (reglas demo, sin IA real)
+                  </p>
                   <p className="text-sm leading-relaxed">{analisis}</p>
                 </Card>
               )}
               <div className="am-entrada" style={retraso(200)}>
-              <Card className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                <div className="text-sm">
-                  <p className="font-semibold">Solicitud {form.id} · elegí 1 o 2 lotes (combiná dos molinos si ninguno cubre solo)</p>
-                  <p className="text-xs text-muted-foreground">
-                    {!asignacion ? "Ningún lote elegido." : `Asignación: ${asignacion.lotes.map((l) => `${l.loteId} ${fmtTn(l.tn)}`).join(" + ")} = ${fmtTn(asignacion.totalTn)} de ${fmtTn(form.volumenTn)}${asignacion.cubreVolumen ? "" : " — falta volumen: elegí un segundo lote"}`}
-                  </p>
-                  {asignacion && asignacion.lotes.length > 0 && (
-                    <div className="mt-2 max-w-md">
-                      {/* Cobertura multilote: cada tramo es exactamente tn del lote / volumen solicitado. */}
-                      <div className="flex h-2 overflow-hidden rounded-full bg-muted ring-1 ring-inset ring-border" role="img" aria-label={`Cobertura: ${asignacion.lotes.map((l) => `${l.loteId} ${fmtTn(l.tn)}`).join(" + ")} de ${fmtTn(form.volumenTn)}`}>
-                        {asignacion.lotes.map((l, i) => (
-                          <div
-                            key={l.loteId}
-                            title={`${l.loteId} · ${fmtTn(l.tn)}`}
-                            className={cn("am-barra am-rapida h-full transition-[width] duration-300 ease-out first:rounded-l-full last:rounded-r-full", i === 0 ? "bg-[#34765B]" : "bg-[#D5B36B]")}
-                            style={{ width: `${(l.tn / form.volumenTn) * 100}%`, ...retraso(i * 120) }}
-                          />
-                        ))}
+                <Card className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                  <div className="text-sm">
+                    <p className="font-semibold">
+                      Solicitud {form.id} · elegí 1 o 2 lotes (combiná dos molinos si ninguno cubre
+                      solo)
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {!asignacion
+                        ? "Ningún lote elegido."
+                        : `Asignación: ${asignacion.lotes.map((l) => `${l.loteId} ${fmtTn(l.tn)}`).join(" + ")} = ${fmtTn(asignacion.totalTn)} de ${fmtTn(form.volumenTn)}${asignacion.cubreVolumen ? "" : " — falta volumen: elegí un segundo lote"}`}
+                    </p>
+                    {asignacion && asignacion.lotes.length > 0 && (
+                      <div className="mt-2 max-w-md">
+                        {/* Cobertura multilote: cada tramo es exactamente tn del lote / volumen solicitado. */}
+                        <div
+                          className="flex h-2 overflow-hidden rounded-full bg-muted ring-1 ring-inset ring-border"
+                          role="img"
+                          aria-label={`Cobertura: ${asignacion.lotes.map((l) => `${l.loteId} ${fmtTn(l.tn)}`).join(" + ")} de ${fmtTn(form.volumenTn)}`}
+                        >
+                          {asignacion.lotes.map((l, i) => (
+                            <div
+                              key={l.loteId}
+                              title={`${l.loteId} · ${fmtTn(l.tn)}`}
+                              className={cn(
+                                "am-barra am-rapida h-full transition-[width] duration-300 ease-out first:rounded-l-full last:rounded-r-full",
+                                i === 0 ? "bg-[#34765B]" : "bg-[#D5B36B]",
+                              )}
+                              style={{
+                                width: `${(l.tn / form.volumenTn) * 100}%`,
+                                ...retraso(i * 120),
+                              }}
+                            />
+                          ))}
+                        </div>
+                        <div className="mt-1 flex flex-wrap gap-x-3 text-[11px] text-muted-foreground">
+                          {asignacion.lotes.map((l, i) => (
+                            <span key={l.loteId} className="inline-flex items-center gap-1">
+                              <span
+                                className={cn(
+                                  "h-2 w-2 rounded-full",
+                                  i === 0 ? "bg-[#34765B]" : "bg-[#D5B36B]",
+                                )}
+                              />
+                              <span className="font-mono">{l.loteId}</span>
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                      <div className="mt-1 flex flex-wrap gap-x-3 text-[11px] text-muted-foreground">
-                        {asignacion.lotes.map((l, i) => (
-                          <span key={l.loteId} className="inline-flex items-center gap-1">
-                            <span className={cn("h-2 w-2 rounded-full", i === 0 ? "bg-[#34765B]" : "bg-[#D5B36B]")} />
-                            <span className="font-mono">{l.loteId}</span>
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <Button disabled={!asignacion?.cubreVolumen} onClick={generarCotizacion}><FileOutput className="h-4 w-4" />Generar cotización</Button>
-              </Card>
+                    )}
+                  </div>
+                  <Button disabled={!asignacion?.cubreVolumen} onClick={generarCotizacion}>
+                    <FileOutput className="h-4 w-4" />
+                    Generar cotización
+                  </Button>
+                </Card>
               </div>
               <div className="grid gap-4 lg:grid-cols-2">
                 {resultados.map((r, i) => {
                   const m = META[r.resultado];
                   const Icon = m.icon;
                   return (
-                    <div key={r.producto.id} className="am-entrada flex" style={escalonado(i, 320, 90, 6)}>
-                    <Card className={cn("am-tarjeta flex flex-1 flex-col", m.card)}>
-                      <div className="flex items-start justify-between gap-2">
-                        <span className={cn("inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold", m.chip)}><Icon className="h-3.5 w-3.5" />{m.label}</span>
-                        <span className="font-mono text-[11px] text-muted-foreground">{r.producto.id}</span>
-                      </div>
-                      <h3 className="mt-2 font-semibold">{r.producto.tipoArroz} {r.producto.variedad.toLowerCase()}</h3>
-                      <p className="text-xs text-muted-foreground">{r.producto.empresa} · {fmtTn(r.producto.cantidadTn)} disponibles</p>
-                      {r.coincidencias.length > 0 && (
-                        <ul className="am-escalonar mt-3 space-y-1 text-xs" style={escalonado(i, 520, 90, 6)}>{r.coincidencias.map((c) => <li key={c} className="flex gap-1.5"><CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-success" />{c}</li>)}</ul>
-                      )}
-                      {r.diferencias.length > 0 && (
-                        <ul className="mt-2 space-y-1 text-xs">{r.diferencias.map((c) => <li key={c} className="flex gap-1.5"><CircleAlert className="mt-0.5 h-3 w-3 shrink-0 text-warning" />{c}</li>)}</ul>
-                      )}
-                      {r.incumplimientos.length > 0 && (
-                        <ul className="mt-2 space-y-1 text-xs font-medium text-destructive">{r.incumplimientos.map((c) => <li key={c} className="flex gap-1.5"><CircleX className="mt-0.5 h-3 w-3 shrink-0" />{c}</li>)}</ul>
-                      )}
-                      <div className="mt-auto flex gap-2 pt-4">
-                        <Button size="sm" variant="outline" className="flex-1" onClick={() => setComparar(r)}><Scale className="h-3.5 w-3.5" />Comparar</Button>
-                        <Button size="sm" className="flex-1" variant={elegidos.includes(r.producto.id) ? "default" : "outline"} disabled={r.resultado === "incompatible"} onClick={() => toggleLote(r.producto.id)}>{elegidos.includes(r.producto.id) ? "✓ Elegido" : "Elegir lote"}</Button>
-                      </div>
-                    </Card>
+                    <div
+                      key={r.producto.id}
+                      className="am-entrada flex"
+                      style={escalonado(i, 320, 90, 6)}
+                    >
+                      <Card className={cn("am-tarjeta flex flex-1 flex-col", m.card)}>
+                        <div className="flex items-start justify-between gap-2">
+                          <span
+                            className={cn(
+                              "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold",
+                              m.chip,
+                            )}
+                          >
+                            <Icon className="h-3.5 w-3.5" />
+                            {m.label}
+                          </span>
+                          <span className="font-mono text-[11px] text-muted-foreground">
+                            {r.producto.id}
+                          </span>
+                        </div>
+                        <h3 className="mt-2 font-semibold">
+                          {r.producto.tipoArroz} {r.producto.variedad.toLowerCase()}
+                        </h3>
+                        <p className="text-xs text-muted-foreground">
+                          {r.producto.empresa} · {fmtTn(r.producto.cantidadTn)} disponibles
+                        </p>
+                        {r.coincidencias.length > 0 && (
+                          <ul
+                            className="am-escalonar mt-3 space-y-1 text-xs"
+                            style={escalonado(i, 520, 90, 6)}
+                          >
+                            {r.coincidencias.map((c) => (
+                              <li key={c} className="flex gap-1.5">
+                                <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-success" />
+                                {c}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {r.diferencias.length > 0 && (
+                          <ul className="mt-2 space-y-1 text-xs">
+                            {r.diferencias.map((c) => (
+                              <li key={c} className="flex gap-1.5">
+                                <CircleAlert className="mt-0.5 h-3 w-3 shrink-0 text-warning" />
+                                {c}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {r.incumplimientos.length > 0 && (
+                          <ul className="mt-2 space-y-1 text-xs font-medium text-destructive">
+                            {r.incumplimientos.map((c) => (
+                              <li key={c} className="flex gap-1.5">
+                                <CircleX className="mt-0.5 h-3 w-3 shrink-0" />
+                                {c}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        <div className="mt-auto flex gap-2 pt-4">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex-1"
+                            onClick={() => setComparar(r)}
+                          >
+                            <Scale className="h-3.5 w-3.5" />
+                            Comparar
+                          </Button>
+                          <Button
+                            size="sm"
+                            className="flex-1"
+                            variant={elegidos.includes(r.producto.id) ? "default" : "outline"}
+                            disabled={r.resultado === "incompatible"}
+                            onClick={() => toggleLote(r.producto.id)}
+                          >
+                            {elegidos.includes(r.producto.id) ? "✓ Elegido" : "Elegir lote"}
+                          </Button>
+                        </div>
+                      </Card>
                     </div>
                   );
                 })}
@@ -265,28 +617,82 @@ function Matching() {
             <>
               <SheetHeader>
                 <SheetTitle>Comparación técnica</SheetTitle>
-                <SheetDescription>Solicitud {form.id} vs. lote {comparar.producto.id}</SheetDescription>
+                <SheetDescription>
+                  Solicitud {form.id} vs. lote {comparar.producto.id}
+                </SheetDescription>
               </SheetHeader>
               <table className="mt-4 w-full text-sm">
-                <thead><tr className="border-b text-left text-xs text-muted-foreground"><th className="pb-2">Atributo</th><th className="pb-2">Solicitado</th><th className="pb-2">Lote</th><th /></tr></thead>
+                <thead>
+                  <tr className="border-b text-left text-xs text-muted-foreground">
+                    <th className="pb-2">Atributo</th>
+                    <th className="pb-2">Solicitado</th>
+                    <th className="pb-2">Lote</th>
+                    <th />
+                  </tr>
+                </thead>
                 <tbody>
                   {[
-                    ["Tipo", form.tipoArroz, comparar.producto.tipoArroz, form.tipoArroz === comparar.producto.tipoArroz],
-                    ["Variedad", form.variedad, comparar.producto.variedad, form.variedad === comparar.producto.variedad],
-                    ["Volumen", fmtTn(form.volumenTn), fmtTn(comparar.producto.cantidadTn), comparar.producto.cantidadTn >= form.volumenTn],
-                    ["Quebrado", `≤ ${form.quebradoMaxPct}%`, `${comparar.producto.quebradoPct}%`, comparar.producto.quebradoPct <= form.quebradoMaxPct],
-                    ["Humedad", `≤ ${form.humedadMaxPct}%`, `${comparar.producto.humedadPct}%`, comparar.producto.humedadPct <= form.humedadMaxPct],
-                    ["Presentación", form.presentacion, comparar.producto.presentacion, form.presentacion === comparar.producto.presentacion],
-                    ["Disponibilidad", "Disponible", comparar.producto.estado, comparar.producto.estado === "Disponible"],
+                    [
+                      "Tipo",
+                      form.tipoArroz,
+                      comparar.producto.tipoArroz,
+                      form.tipoArroz === comparar.producto.tipoArroz,
+                    ],
+                    [
+                      "Variedad",
+                      form.variedad,
+                      comparar.producto.variedad,
+                      form.variedad === comparar.producto.variedad,
+                    ],
+                    [
+                      "Volumen",
+                      fmtTn(form.volumenTn),
+                      fmtTn(comparar.producto.cantidadTn),
+                      comparar.producto.cantidadTn >= form.volumenTn,
+                    ],
+                    [
+                      "Quebrado",
+                      `≤ ${form.quebradoMaxPct}%`,
+                      `${comparar.producto.quebradoPct}%`,
+                      comparar.producto.quebradoPct <= form.quebradoMaxPct,
+                    ],
+                    [
+                      "Humedad",
+                      `≤ ${form.humedadMaxPct}%`,
+                      `${comparar.producto.humedadPct}%`,
+                      comparar.producto.humedadPct <= form.humedadMaxPct,
+                    ],
+                    [
+                      "Presentación",
+                      form.presentacion,
+                      comparar.producto.presentacion,
+                      form.presentacion === comparar.producto.presentacion,
+                    ],
+                    [
+                      "Disponibilidad",
+                      "Disponible",
+                      comparar.producto.estado,
+                      comparar.producto.estado === "Disponible",
+                    ],
                   ].map(([k, a, b, ok]) => (
                     <tr key={String(k)} className="border-b border-border/60">
-                      <td className="py-2.5 text-muted-foreground">{k}</td><td>{a}</td><td className="font-medium">{b}</td>
-                      <td>{ok ? <CheckCircle2 className="h-4 w-4 text-success" /> : <CircleX className="h-4 w-4 text-destructive" />}</td>
+                      <td className="py-2.5 text-muted-foreground">{k}</td>
+                      <td>{a}</td>
+                      <td className="font-medium">{b}</td>
+                      <td>
+                        {ok ? (
+                          <CheckCircle2 className="h-4 w-4 text-success" />
+                        ) : (
+                          <CircleX className="h-4 w-4 text-destructive" />
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              <div className="mt-4 rounded-lg bg-muted p-3 text-sm leading-relaxed">{comparar.resumen}</div>
+              <div className="mt-4 rounded-lg bg-muted p-3 text-sm leading-relaxed">
+                {comparar.resumen}
+              </div>
             </>
           )}
         </SheetContent>
@@ -296,5 +702,10 @@ function Matching() {
 }
 
 function L({ t, children, full }: { t: string; children: React.ReactNode; full?: boolean }) {
-  return <label className={cn("space-y-1", full && "col-span-2")}><span className="text-xs font-medium text-muted-foreground">{t}</span>{children}</label>;
+  return (
+    <label className={cn("space-y-1", full && "col-span-2")}>
+      <span className="text-xs font-medium text-muted-foreground">{t}</span>
+      {children}
+    </label>
+  );
 }

@@ -1,4 +1,12 @@
-import { createContext, useContext, useEffect, useMemo, useReducer, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+  type ReactNode,
+} from "react";
 import {
   CONCILIACIONES_INICIALES,
   COTIZACIONES_INICIALES,
@@ -25,6 +33,7 @@ import {
 import { REQUISITOS_INICIALES, type RequisitoMercado } from "@/data/mercados";
 import { ORGANIZACIONES_DEMO, type Modo, type Organizacion } from "@/data/organizaciones";
 import { construirOperacion } from "@/lib/recorrido";
+import { prepararReservaCotizacion } from "@/lib/reservas";
 import { aplicarTema } from "@/lib/tema";
 import { ACUERDOS_REFERENCIA, type AcuerdoStellar, type EtapaAcuerdo } from "@/lib/stellar/config";
 
@@ -121,7 +130,12 @@ export function reducer(state: AppState, action: Action): AppState {
     case "setRol":
       return { ...state, rol: action.rol };
     case "elegirModo":
-      return { ...state, rol: action.rol, ...(action.modo ? { modo: action.modo } : {}), modoElegido: true };
+      return {
+        ...state,
+        rol: action.rol,
+        ...(action.modo ? { modo: action.modo } : {}),
+        modoElegido: true,
+      };
     case "cambiarModo":
       return { ...state, modoElegido: false };
     case "setModo":
@@ -133,7 +147,9 @@ export function reducer(state: AppState, action: Action): AppState {
     case "updateOrganizacion":
       return {
         ...state,
-        organizaciones: state.organizaciones.map((o) => (o.id === action.id ? { ...o, ...action.patch } : o)),
+        organizaciones: state.organizaciones.map((o) =>
+          o.id === action.id ? { ...o, ...action.patch } : o,
+        ),
       };
     case "addProducto":
       return { ...state, productos: [action.producto, ...state.productos] };
@@ -142,7 +158,12 @@ export function reducer(state: AppState, action: Action): AppState {
     case "addSolicitud":
       return { ...state, solicitudes: [action.solicitud, ...state.solicitudes] };
     case "updateSolicitud":
-      return { ...state, solicitudes: state.solicitudes.map((x) => (x.id === action.id ? { ...x, ...action.patch } : x)) };
+      return {
+        ...state,
+        solicitudes: state.solicitudes.map((x) =>
+          x.id === action.id ? { ...x, ...action.patch } : x,
+        ),
+      };
     case "aceptarCotizacion": {
       const c = state.cotizaciones.find((x) => x.id === action.id);
       if (!c) return state;
@@ -151,18 +172,28 @@ export function reducer(state: AppState, action: Action): AppState {
         // Idempotente: aceptar dos veces no duplica la operación.
         return {
           ...state,
-          cotizaciones: state.cotizaciones.map((x) => (x.id === c.id ? { ...x, estado: "Aceptada", operacionId: existente.id } : x)),
+          cotizaciones: state.cotizaciones.map((x) =>
+            x.id === c.id ? { ...x, estado: "Aceptada", operacionId: existente.id } : x,
+          ),
         };
       }
-      const operacion = construirOperacion(c, state.operaciones.map((o) => o.id));
-      let next: AppState = {
+      const reserva = prepararReservaCotizacion(c, state.productos);
+      if (!reserva.ok) return state;
+      const operacion = construirOperacion(
+        c,
+        state.operaciones.map((o) => o.id),
+      );
+      return {
         ...state,
+        productos: reserva.productos,
         operaciones: [operacion, ...state.operaciones],
-        cotizaciones: state.cotizaciones.map((x) => (x.id === c.id ? { ...x, estado: "Aceptada", operacionId: operacion.id } : x)),
-        solicitudes: state.solicitudes.map((x) => (x.id === c.solicitudId ? { ...x, estado: "Cerrada" } : x)),
+        cotizaciones: state.cotizaciones.map((x) =>
+          x.id === c.id ? { ...x, estado: "Aceptada", operacionId: operacion.id } : x,
+        ),
+        solicitudes: state.solicitudes.map((x) =>
+          x.id === c.solicitudId ? { ...x, estado: "Cerrada" } : x,
+        ),
       };
-      for (const l of c.lotes ?? []) next = reducer(next, { type: "reservarStock", productoId: l.loteId, cantidadTn: l.tn });
-      return next;
     }
     case "reiniciarDemoComercial":
       return {
@@ -178,14 +209,18 @@ export function reducer(state: AppState, action: Action): AppState {
     case "updateCotizacion":
       return {
         ...state,
-        cotizaciones: state.cotizaciones.map((c) => (c.id === action.id ? { ...c, ...action.patch } : c)),
+        cotizaciones: state.cotizaciones.map((c) =>
+          c.id === action.id ? { ...c, ...action.patch } : c,
+        ),
       };
     case "addOperacion":
       return { ...state, operaciones: [action.operacion, ...state.operaciones] };
     case "updateOperacion":
       return {
         ...state,
-        operaciones: state.operaciones.map((o) => (o.id === action.id ? { ...o, ...action.patch } : o)),
+        operaciones: state.operaciones.map((o) =>
+          o.id === action.id ? { ...o, ...action.patch } : o,
+        ),
       };
     case "addConciliacion":
       return { ...state, conciliaciones: [action.conciliacion, ...state.conciliaciones] };
@@ -194,7 +229,9 @@ export function reducer(state: AppState, action: Action): AppState {
     case "updateConversacion":
       return {
         ...state,
-        conversaciones: state.conversaciones.map((c) => (c.id === action.id ? { ...c, ...action.patch } : c)),
+        conversaciones: state.conversaciones.map((c) =>
+          c.id === action.id ? { ...c, ...action.patch } : c,
+        ),
       };
     case "addAccion":
       return { ...state, acciones: [action.accion, ...state.acciones] };
@@ -219,31 +256,51 @@ export function reducer(state: AppState, action: Action): AppState {
     case "updateRequisito":
       return {
         ...state,
-        requisitos: state.requisitos.map((r) => (r.id === action.id ? { ...r, ...action.patch } : r)),
+        requisitos: state.requisitos.map((r) =>
+          r.id === action.id ? { ...r, ...action.patch } : r,
+        ),
       };
     case "removeRequisito":
       return { ...state, requisitos: state.requisitos.filter((r) => r.id !== action.id) };
     case "addAcuerdoStellar":
-      if (state.acuerdosStellar.some((a) => a.contractId === action.acuerdo.contractId && a.id === action.acuerdo.id)) return state;
+      if (
+        state.acuerdosStellar.some(
+          (a) => a.contractId === action.acuerdo.contractId && a.id === action.acuerdo.id,
+        )
+      )
+        return state;
       return { ...state, acuerdosStellar: [action.acuerdo, ...state.acuerdosStellar] };
     case "addTxAcuerdoStellar":
       return {
         ...state,
         acuerdosStellar: state.acuerdosStellar.map((a) =>
           a.id === action.id && !a.transacciones.some((t) => t.hash === action.hash)
-            ? { ...a, transacciones: [...a.transacciones, { etapa: action.etapa, hash: action.hash }] }
+            ? {
+                ...a,
+                transacciones: [...a.transacciones, { etapa: action.etapa, hash: action.hash }],
+              }
             : a,
         ),
       };
     case "reservarStock": {
       // Nunca deja stock negativo: si no alcanza, el estado no cambia.
       const p = state.productos.find((x) => x.id === action.productoId);
-      if (!p || p.estado !== "Disponible" || action.cantidadTn <= 0 || action.cantidadTn > p.cantidadTn) return state;
+      if (
+        !p ||
+        p.estado !== "Disponible" ||
+        !Number.isFinite(p.cantidadTn) ||
+        !Number.isFinite(action.cantidadTn) ||
+        action.cantidadTn <= 0 ||
+        action.cantidadTn > p.cantidadTn
+      )
+        return state;
       const resto = +(p.cantidadTn - action.cantidadTn).toFixed(3);
       return {
         ...state,
         productos: state.productos.map((x) =>
-          x.id === p.id ? { ...x, cantidadTn: resto, estado: resto === 0 ? "Reservado" : x.estado } : x,
+          x.id === p.id
+            ? { ...x, cantidadTn: resto, estado: resto === 0 ? "Reservado" : x.estado }
+            : x,
         ),
       };
     }
@@ -268,7 +325,8 @@ function loadState(): AppState {
       window.localStorage.getItem(STORAGE_KEY) ?? window.localStorage.getItem(STORAGE_KEY_ANTERIOR);
     if (!raw) return initialState;
     const parsed = JSON.parse(raw) as AppState;
-    if (!parsed.productos || !parsed.cotizaciones || !parsed.mensajes || !parsed.acciones) return initialState;
+    if (!parsed.productos || !parsed.cotizaciones || !parsed.mensajes || !parsed.acciones)
+      return initialState;
     if (!parsed.requisitos) parsed.requisitos = REQUISITOS_INICIALES;
     if (!parsed.organizaciones?.length) parsed.organizaciones = ORGANIZACIONES_DEMO;
     if (!parsed.organizacionActivaId) parsed.organizacionActivaId = "ORG-B";
