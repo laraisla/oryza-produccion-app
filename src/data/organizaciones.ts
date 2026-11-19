@@ -21,6 +21,7 @@ import {
   ShoppingCart,
   Sparkles,
   Truck,
+  Warehouse,
   Waypoints,
   type LucideIcon,
 } from "lucide-react";
@@ -151,6 +152,9 @@ export interface NavItem {
   icon: LucideIcon;
 }
 
+// Prototipo AgroLocal Gestión (demo local con datos ficticios), disponible en todos los modos.
+const GESTION: NavItem = { to: "/gestion", label: "Gestión de acopio (demo)", icon: Warehouse };
+
 const COMUNES: NavItem[] = [
   { to: "/asistente", label: "Asistente WhatsApp", icon: MessageSquareText },
   { to: "/mi-empresa", label: "Mi empresa", icon: Building2 },
@@ -165,6 +169,7 @@ export const NAV_POR_MODO: Record<Modo, NavItem[]> = {
     { to: "/solicitudes", label: "Mis negociaciones", icon: FileText },
     { to: "/cotizaciones", label: "Mis ventas", icon: Files },
     { to: "/operaciones", label: "Mis operaciones", icon: Truck },
+    GESTION,
     { to: "/evidencia-stellar", label: "Evidencia Stellar", icon: Blocks },
     ...COMUNES,
   ],
@@ -174,6 +179,7 @@ export const NAV_POR_MODO: Record<Modo, NavItem[]> = {
     { to: "/solicitudes", label: "Mis solicitudes", icon: FileText },
     { to: "/cotizaciones", label: "Ofertas recibidas", icon: Files },
     { to: "/operaciones", label: "Mis compras", icon: Truck },
+    GESTION,
     { to: "/evidencia-stellar", label: "Evidencia Stellar", icon: Blocks },
     { to: "/asistente", label: "Mensajes", icon: MessageSquareText },
     { to: "/mi-empresa", label: "Mi empresa", icon: Building2 },
@@ -186,6 +192,7 @@ export const NAV_POR_MODO: Record<Modo, NavItem[]> = {
     { to: "/cotizaciones", label: "Cotizaciones", icon: Files },
     { to: "/documentacion", label: "Documentación compartida", icon: Files },
     { to: "/operaciones", label: "Operaciones", icon: Truck },
+    GESTION,
     { to: "/evidencia-stellar", label: "Evidencia Stellar", icon: Blocks },
     { to: "/asistente", label: "Mensajes", icon: MessageSquareText },
     { to: "/mi-empresa", label: "Mi empresa", icon: Building2 },
@@ -205,6 +212,7 @@ export const NAV_POR_MODO: Record<Modo, NavItem[]> = {
     { to: "/operaciones", label: "Operaciones y embarques", icon: Truck },
     { to: "/conciliacion", label: "Conciliación financiera", icon: Scale },
     { to: "/trazabilidad", label: "Trazabilidad", icon: Waypoints },
+    GESTION,
     { to: "/evidencia-stellar", label: "Evidencia Stellar", icon: Blocks },
     { to: "/mi-empresa", label: "Mi empresa", icon: Building2 },
     { to: "/configuracion", label: "Configuración", icon: Settings },

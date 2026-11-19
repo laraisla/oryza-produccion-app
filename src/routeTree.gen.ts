@@ -17,6 +17,7 @@ import { Route as ConfiguracionRouteImport } from './routes/configuracion'
 import { Route as CotizacionesRouteImport } from './routes/cotizaciones'
 import { Route as DocumentacionRouteImport } from './routes/documentacion'
 import { Route as EvidenciaStellarRouteImport } from './routes/evidencia-stellar'
+import { Route as GestionRouteImport } from './routes/gestion'
 import { Route as InteligenciaMercadosRouteImport } from './routes/inteligencia-mercados'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as MatchingRouteImport } from './routes/matching'
@@ -27,6 +28,11 @@ import { Route as RegistroEmpresaRouteImport } from './routes/registro-empresa'
 import { Route as SolicitudesRouteImport } from './routes/solicitudes'
 import { Route as TrazabilidadRouteImport } from './routes/trazabilidad'
 import { Route as EvidenciaStellarDocumentalRouteImport } from './routes/evidencia-stellar_.documental'
+import { Route as GestionIndexRouteImport } from './routes/gestion.index'
+import { Route as GestionDepositosRouteImport } from './routes/gestion.depositos'
+import { Route as GestionInventarioRouteImport } from './routes/gestion.inventario'
+import { Route as GestionLotesRouteImport } from './routes/gestion.lotes'
+import { Route as GestionMovimientosRouteImport } from './routes/gestion.movimientos'
 import { Route as ApiPublicMarcaDetectarRouteImport } from './routes/api/public/marca/detectar'
 import { Route as ApiPublicStellarAcuerdosRouteImport } from './routes/api/public/stellar/acuerdos'
 import { Route as ApiPublicStellarAnclajeRouteImport } from './routes/api/public/stellar/anclaje'
@@ -70,6 +76,11 @@ const DocumentacionRoute = DocumentacionRouteImport.update({
 const EvidenciaStellarRoute = EvidenciaStellarRouteImport.update({
   id: '/evidencia-stellar',
   path: '/evidencia-stellar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GestionRoute = GestionRouteImport.update({
+  id: '/gestion',
+  path: '/gestion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InteligenciaMercadosRoute = InteligenciaMercadosRouteImport.update({
@@ -123,6 +134,31 @@ const EvidenciaStellarDocumentalRoute =
     path: '/evidencia-stellar/documental',
     getParentRoute: () => rootRouteImport,
   } as any)
+const GestionIndexRoute = GestionIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => GestionRoute,
+} as any)
+const GestionDepositosRoute = GestionDepositosRouteImport.update({
+  id: '/depositos',
+  path: '/depositos',
+  getParentRoute: () => GestionRoute,
+} as any)
+const GestionInventarioRoute = GestionInventarioRouteImport.update({
+  id: '/inventario',
+  path: '/inventario',
+  getParentRoute: () => GestionRoute,
+} as any)
+const GestionLotesRoute = GestionLotesRouteImport.update({
+  id: '/lotes',
+  path: '/lotes',
+  getParentRoute: () => GestionRoute,
+} as any)
+const GestionMovimientosRoute = GestionMovimientosRouteImport.update({
+  id: '/movimientos',
+  path: '/movimientos',
+  getParentRoute: () => GestionRoute,
+} as any)
 const ApiPublicMarcaDetectarRoute = ApiPublicMarcaDetectarRouteImport.update({
   id: '/api/public/marca/detectar',
   path: '/api/public/marca/detectar',
@@ -155,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/cotizaciones': typeof CotizacionesRoute
   '/documentacion': typeof DocumentacionRoute
   '/evidencia-stellar': typeof EvidenciaStellarRoute
+  '/gestion': typeof GestionRouteWithChildren
   '/inteligencia-mercados': typeof InteligenciaMercadosRoute
   '/marketplace': typeof MarketplaceRoute
   '/matching': typeof MatchingRoute
@@ -165,6 +202,11 @@ export interface FileRoutesByFullPath {
   '/solicitudes': typeof SolicitudesRoute
   '/trazabilidad': typeof TrazabilidadRoute
   '/evidencia-stellar/documental': typeof EvidenciaStellarDocumentalRoute
+  '/gestion/depositos': typeof GestionDepositosRoute
+  '/gestion/inventario': typeof GestionInventarioRoute
+  '/gestion/lotes': typeof GestionLotesRoute
+  '/gestion/movimientos': typeof GestionMovimientosRoute
+  '/gestion/': typeof GestionIndexRoute
   '/api/public/marca/detectar': typeof ApiPublicMarcaDetectarRoute
   '/api/public/stellar/acuerdos': typeof ApiPublicStellarAcuerdosRoute
   '/api/public/stellar/anclaje': typeof ApiPublicStellarAnclajeRoute
@@ -189,6 +231,11 @@ export interface FileRoutesByTo {
   '/solicitudes': typeof SolicitudesRoute
   '/trazabilidad': typeof TrazabilidadRoute
   '/evidencia-stellar/documental': typeof EvidenciaStellarDocumentalRoute
+  '/gestion/depositos': typeof GestionDepositosRoute
+  '/gestion/inventario': typeof GestionInventarioRoute
+  '/gestion/lotes': typeof GestionLotesRoute
+  '/gestion/movimientos': typeof GestionMovimientosRoute
+  '/gestion': typeof GestionIndexRoute
   '/api/public/marca/detectar': typeof ApiPublicMarcaDetectarRoute
   '/api/public/stellar/acuerdos': typeof ApiPublicStellarAcuerdosRoute
   '/api/public/stellar/anclaje': typeof ApiPublicStellarAnclajeRoute
@@ -204,6 +251,7 @@ export interface FileRoutesById {
   '/cotizaciones': typeof CotizacionesRoute
   '/documentacion': typeof DocumentacionRoute
   '/evidencia-stellar': typeof EvidenciaStellarRoute
+  '/gestion': typeof GestionRouteWithChildren
   '/inteligencia-mercados': typeof InteligenciaMercadosRoute
   '/marketplace': typeof MarketplaceRoute
   '/matching': typeof MatchingRoute
@@ -214,6 +262,11 @@ export interface FileRoutesById {
   '/solicitudes': typeof SolicitudesRoute
   '/trazabilidad': typeof TrazabilidadRoute
   '/evidencia-stellar_/documental': typeof EvidenciaStellarDocumentalRoute
+  '/gestion/depositos': typeof GestionDepositosRoute
+  '/gestion/inventario': typeof GestionInventarioRoute
+  '/gestion/lotes': typeof GestionLotesRoute
+  '/gestion/movimientos': typeof GestionMovimientosRoute
+  '/gestion/': typeof GestionIndexRoute
   '/api/public/marca/detectar': typeof ApiPublicMarcaDetectarRoute
   '/api/public/stellar/acuerdos': typeof ApiPublicStellarAcuerdosRoute
   '/api/public/stellar/anclaje': typeof ApiPublicStellarAnclajeRoute
@@ -230,6 +283,7 @@ export interface FileRouteTypes {
     | '/cotizaciones'
     | '/documentacion'
     | '/evidencia-stellar'
+    | '/gestion'
     | '/inteligencia-mercados'
     | '/marketplace'
     | '/matching'
@@ -240,6 +294,11 @@ export interface FileRouteTypes {
     | '/solicitudes'
     | '/trazabilidad'
     | '/evidencia-stellar/documental'
+    | '/gestion/depositos'
+    | '/gestion/inventario'
+    | '/gestion/lotes'
+    | '/gestion/movimientos'
+    | '/gestion/'
     | '/api/public/marca/detectar'
     | '/api/public/stellar/acuerdos'
     | '/api/public/stellar/anclaje'
@@ -264,6 +323,11 @@ export interface FileRouteTypes {
     | '/solicitudes'
     | '/trazabilidad'
     | '/evidencia-stellar/documental'
+    | '/gestion/depositos'
+    | '/gestion/inventario'
+    | '/gestion/lotes'
+    | '/gestion/movimientos'
+    | '/gestion'
     | '/api/public/marca/detectar'
     | '/api/public/stellar/acuerdos'
     | '/api/public/stellar/anclaje'
@@ -278,6 +342,7 @@ export interface FileRouteTypes {
     | '/cotizaciones'
     | '/documentacion'
     | '/evidencia-stellar'
+    | '/gestion'
     | '/inteligencia-mercados'
     | '/marketplace'
     | '/matching'
@@ -288,6 +353,11 @@ export interface FileRouteTypes {
     | '/solicitudes'
     | '/trazabilidad'
     | '/evidencia-stellar_/documental'
+    | '/gestion/depositos'
+    | '/gestion/inventario'
+    | '/gestion/lotes'
+    | '/gestion/movimientos'
+    | '/gestion/'
     | '/api/public/marca/detectar'
     | '/api/public/stellar/acuerdos'
     | '/api/public/stellar/anclaje'
@@ -303,6 +373,7 @@ export interface RootRouteChildren {
   CotizacionesRoute: typeof CotizacionesRoute
   DocumentacionRoute: typeof DocumentacionRoute
   EvidenciaStellarRoute: typeof EvidenciaStellarRoute
+  GestionRoute: typeof GestionRouteWithChildren
   InteligenciaMercadosRoute: typeof InteligenciaMercadosRoute
   MarketplaceRoute: typeof MarketplaceRoute
   MatchingRoute: typeof MatchingRoute
@@ -377,6 +448,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EvidenciaStellarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gestion': {
+      id: '/gestion'
+      path: '/gestion'
+      fullPath: '/gestion'
+      preLoaderRoute: typeof GestionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inteligencia-mercados': {
       id: '/inteligencia-mercados'
       path: '/inteligencia-mercados'
@@ -447,6 +525,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EvidenciaStellarDocumentalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gestion/': {
+      id: '/gestion/'
+      path: '/'
+      fullPath: '/gestion/'
+      preLoaderRoute: typeof GestionIndexRouteImport
+      parentRoute: typeof GestionRoute
+    }
+    '/gestion/depositos': {
+      id: '/gestion/depositos'
+      path: '/depositos'
+      fullPath: '/gestion/depositos'
+      preLoaderRoute: typeof GestionDepositosRouteImport
+      parentRoute: typeof GestionRoute
+    }
+    '/gestion/inventario': {
+      id: '/gestion/inventario'
+      path: '/inventario'
+      fullPath: '/gestion/inventario'
+      preLoaderRoute: typeof GestionInventarioRouteImport
+      parentRoute: typeof GestionRoute
+    }
+    '/gestion/lotes': {
+      id: '/gestion/lotes'
+      path: '/lotes'
+      fullPath: '/gestion/lotes'
+      preLoaderRoute: typeof GestionLotesRouteImport
+      parentRoute: typeof GestionRoute
+    }
+    '/gestion/movimientos': {
+      id: '/gestion/movimientos'
+      path: '/movimientos'
+      fullPath: '/gestion/movimientos'
+      preLoaderRoute: typeof GestionMovimientosRouteImport
+      parentRoute: typeof GestionRoute
+    }
     '/api/public/marca/detectar': {
       id: '/api/public/marca/detectar'
       path: '/api/public/marca/detectar'
@@ -478,6 +591,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface GestionRouteChildren {
+  GestionDepositosRoute: typeof GestionDepositosRoute
+  GestionInventarioRoute: typeof GestionInventarioRoute
+  GestionLotesRoute: typeof GestionLotesRoute
+  GestionMovimientosRoute: typeof GestionMovimientosRoute
+  GestionIndexRoute: typeof GestionIndexRoute
+}
+
+const GestionRouteChildren: GestionRouteChildren = {
+  GestionDepositosRoute: GestionDepositosRoute,
+  GestionInventarioRoute: GestionInventarioRoute,
+  GestionLotesRoute: GestionLotesRoute,
+  GestionMovimientosRoute: GestionMovimientosRoute,
+  GestionIndexRoute: GestionIndexRoute,
+}
+
+const GestionRouteWithChildren =
+  GestionRoute._addFileChildren(GestionRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AsistenteRoute: AsistenteRoute,
@@ -487,6 +619,7 @@ const rootRouteChildren: RootRouteChildren = {
   CotizacionesRoute: CotizacionesRoute,
   DocumentacionRoute: DocumentacionRoute,
   EvidenciaStellarRoute: EvidenciaStellarRoute,
+  GestionRoute: GestionRouteWithChildren,
   InteligenciaMercadosRoute: InteligenciaMercadosRoute,
   MarketplaceRoute: MarketplaceRoute,
   MatchingRoute: MatchingRoute,

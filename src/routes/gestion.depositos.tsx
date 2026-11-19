@@ -1,0 +1,9 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
+
+// Pantalla "Depósitos" de AgroLocal Gestión: la renderiza el layout /gestion.
+export const Route = createFileRoute("/gestion/depositos")({
+  head: () =>
+    pageHead("Depósitos · AgroLocal Gestión (demo)", "Prototipo demo con datos ficticios."),
+  component: () => null,
+});
